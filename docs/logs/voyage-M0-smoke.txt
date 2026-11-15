@@ -1,0 +1,10 @@
+page.goto: net::ERR_NETWORK_ACCESS_DENIED at http://127.0.0.1:3110/voyage
+Call log:
+  - navigating to "http://127.0.0.1:3110/voyage", waiting until "load"
+
+    at D:\Git\nasa-app\web\scripts\smoke-voyage.cjs:9:13 {
+  log: [
+    '  - navigating to "http://127.0.0.1:3110/voyage", waiting until "load"'
+  ],
+  name: 'Error'
+}

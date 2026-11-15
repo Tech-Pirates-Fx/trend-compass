@@ -1,0 +1,22 @@
+Task T1 Audit & Corrections Log
+Date: 2026-11-13
+Role: ANTI
+
+1. Relabeled Evidence Tags in docs/DATA_ACCESS.md:
+- GISTEMP: Global Table CSV verified (Status 200, 1880-2026 LOTI anomalies read). Gridded netCDF download pending T2.
+- Data Rods (hydro1.gesdisc.eosdis.nasa.gov): Marked [TESTED - BLOCKED ANONYMOUSLY]. Query returned HTML reCAPTCHA/login splash, proving it is not usable anonymously in automated pipelines.
+- MODIS MOD13A3 & MUR SST: CMR searches relabeled as [READ (CMR Metadata Search)] since only JSON metadata was fetched.
+- GIBS BlueMarble: [TESTED - DATA VERIFIED]. Returned valid 17.8 KB JPEG image tile with HTTP 200 OK.
+
+2. Removed Unverified Product Claims:
+- Removed "MOD13A3 aggregated to 0.5/1 degree in LP DAAC". Native MOD13A3 is 1 km sinusoidal tile grid; global Climate Modeling Grid is MOD13C2 (0.05 deg).
+- Removed "monthly 0.25/1.0 degree MUR SST products on PO.DAAC". MUR SST is natively 0.01 deg daily.
+- Removed NOAA Mauna Loa CO2 from candidate shortlist per Team Playbook.
+
+3. GISTEMP Citation:
+- Updated citation to exact text on current page: Hansen et al. (2010, Rev. Geophys., 48, RG4004) and Lenssen et al. (2024, J. Geophys. Res. Atmos., 129(17), e2023JD040179).
+
+4. SSL Context Probe Audit:
+- Diagnostic probe used ssl.CERT_NONE temporarily to test whether WinError 10054 on data.giss.nasa.gov was caused by client CA verification failure. Error persisted identically, proving it was a server/network-level TCP reset.
+- Policy reaffirmed: TLS certificate verification must NEVER be disabled in production or pipeline code. All production scripts use standard validated contexts.
+

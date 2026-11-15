@@ -1,0 +1,18 @@
+Launching local Chromium
+Browser launched
+Opening voyage
+Page loaded
+Controllable ship boot ms: 1115
+Sample reducer + DOM feedback ms: 0.30
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+'0' !== '4'
+
+    at D:\Git\nasa-app\web\scripts\smoke-voyage.cjs:44:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: '0',
+  expected: '4',
+  operator: 'strictEqual',
+  diff: 'simple'
+}

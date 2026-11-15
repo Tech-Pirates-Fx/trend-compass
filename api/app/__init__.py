@@ -1,0 +1,2 @@
+# Trend Compass API package
+

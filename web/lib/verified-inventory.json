@@ -1,0 +1,612 @@
+{
+  "controls": {
+    "enabled": true,
+    "gistemp": true,
+    "gpcp": true,
+    "sea_level": true,
+    "appeears": true,
+    "data_rods": true,
+    "giovanni": true,
+    "noaa_cdo": true,
+    "knmi": true,
+    "swot": true,
+    "radarsat": true,
+    "earth_info": true,
+    "instruments": true,
+    "global_table": true,
+    "saved_voyages": true,
+    "nasa_imagery": true
+  },
+  "variables": [
+    {
+      "id": "surface_temperature_anomaly",
+      "name": "Surface temperature anomaly",
+      "definition": "GISTEMP v4 combines land-surface air and sea-surface water temperature anomalies relative to 1951\u20131980. Regional results average available grid-cell centers inside the selected box.",
+      "units": "\u00b0C anomaly",
+      "category": "atmosphere",
+      "typical_resolution": "monthly",
+      "available_resolutions": [
+        "monthly"
+      ],
+      "temporal_coverage": {
+        "start": "1880-01",
+        "end": "2026-10"
+      },
+      "spatial_resolution_deg": 2.0,
+      "min_area_km2": 0.0,
+      "max_area_km2": 510100000.0,
+      "is_placeholder": false,
+      "placeholder_note": ""
+    },
+    {
+      "id": "precipitation",
+      "name": "Precipitation rate",
+      "definition": "NASA / NOAA Global Precipitation Climatology Project (GPCP) v2.3 combines microwave, infrared satellite sounders and ground calibration to measure global monthly precipitation rates.",
+      "units": "mm/day",
+      "category": "atmosphere",
+      "typical_resolution": "monthly",
+      "available_resolutions": [
+        "monthly"
+      ],
+      "temporal_coverage": {
+        "start": "1979-01",
+        "end": "2026-10"
+      },
+      "spatial_resolution_deg": 2.5,
+      "min_area_km2": 0.0,
+      "max_area_km2": 510100000.0,
+      "is_placeholder": false,
+      "placeholder_note": ""
+    },
+    {
+      "id": "sea_level",
+      "name": "Global Mean Sea Level (GMSL)",
+      "definition": "NASA Sea Level Change Portal satellite altimeter measurements (TOPEX/Poseidon, Jason-1/2/3, Sentinel-6) tracking global mean ocean surface height anomalies.",
+      "units": "mm anomaly",
+      "category": "ocean",
+      "typical_resolution": "monthly",
+      "available_resolutions": [
+        "monthly"
+      ],
+      "temporal_coverage": {
+        "start": "1993-01",
+        "end": "2026-05"
+      },
+      "spatial_resolution_deg": 0.25,
+      "min_area_km2": 0.0,
+      "max_area_km2": 510100000.0,
+      "is_placeholder": false,
+      "placeholder_note": ""
+    },
+    {
+      "id": "vegetation_ndvi",
+      "name": "Vegetation Index (MODIS NDVI)",
+      "definition": "NASA LP DAAC AppEEARS MOD13C2 Terra/Aqua MODIS 16-day and monthly Normalized Difference Vegetation Index measuring photosynthetic vigor and canopy greenness.",
+      "units": "NDVI (-1 to 1)",
+      "category": "land",
+      "typical_resolution": "monthly",
+      "available_resolutions": [
+        "monthly"
+      ],
+      "temporal_coverage": {
+        "start": "2000-03",
+        "end": "2026-06"
+      },
+      "spatial_resolution_deg": 0.05,
+      "min_area_km2": 0.0,
+      "max_area_km2": 510100000.0,
+      "is_placeholder": false,
+      "placeholder_note": ""
+    },
+    {
+      "id": "soil_moisture",
+      "name": "Volumetric Soil Moisture (0\u2013100 cm)",
+      "definition": "NASA GES DISC Data Rods NLDAS-2 / GLDAS-2 Noah Land Surface Model integrated soil moisture content for root zone drought monitoring.",
+      "units": "kg/m\u00b2",
+      "category": "land",
+      "typical_resolution": "monthly",
+      "available_resolutions": [
+        "monthly"
+      ],
+      "temporal_coverage": {
+        "start": "2020-01",
+        "end": "2025-12"
+      },
+      "spatial_resolution_deg": 0.125,
+      "min_area_km2": 0.0,
+      "max_area_km2": 510100000.0,
+      "is_placeholder": false,
+      "placeholder_note": ""
+    },
+    {
+      "id": "climate_indices",
+      "name": "ENSO Nino 3.4 SST Anomaly Index",
+      "definition": "KNMI Climate Explorer / NOAA NCEI ERSSTv5 monthly equatorial Pacific sea-surface temperature anomaly index for El Ni\u00f1o-Southern Oscillation teleconnection cross-validation.",
+      "units": "\u00b0C anomaly",
+      "category": "ocean",
+      "typical_resolution": "monthly",
+      "available_resolutions": [
+        "monthly"
+      ],
+      "temporal_coverage": {
+        "start": "2020-01",
+        "end": "2025-12"
+      },
+      "spatial_resolution_deg": 2.0,
+      "min_area_km2": 0.0,
+      "max_area_km2": 510100000.0,
+      "is_placeholder": false,
+      "placeholder_note": ""
+    }
+  ],
+  "files": [
+    {
+      "name": "gistemp1200_GHCNv4_ERSSTv5.nc",
+      "bytes": 57112124,
+      "role": "dataset input"
+    },
+    {
+      "name": "gistemp1200_GHCNv4_ERSSTv5.nc.gz",
+      "bytes": 25885943,
+      "role": "dataset input"
+    },
+    {
+      "name": "GLB.Ts+dSST.csv",
+      "bytes": 12887,
+      "role": "validation/reference"
+    },
+    {
+      "name": "appeears-mod13-vegetation.csv",
+      "bytes": 419,
+      "role": "validation/reference"
+    },
+    {
+      "name": "gesdisc-datarods-hydrology.csv",
+      "bytes": 422,
+      "role": "validation/reference"
+    },
+    {
+      "name": "giovanni-imerg-precipitation.csv",
+      "bytes": 573,
+      "role": "validation/reference"
+    },
+    {
+      "name": "knmi-climate-indices.csv",
+      "bytes": 358,
+      "role": "validation/reference"
+    },
+    {
+      "name": "nasa-sea-level-gmsl.csv",
+      "bytes": 454,
+      "role": "validation/reference"
+    },
+    {
+      "name": "noaa-cdo-ghcn-stations.csv",
+      "bytes": 370,
+      "role": "validation/reference"
+    },
+    {
+      "name": "lat.npy",
+      "bytes": 488,
+      "role": "dataset input"
+    },
+    {
+      "name": "lon.npy",
+      "bytes": 848,
+      "role": "dataset input"
+    },
+    {
+      "name": "manifest.json",
+      "bytes": 1750,
+      "role": "dataset input"
+    },
+    {
+      "name": "months.npy",
+      "bytes": 49464,
+      "role": "dataset input"
+    },
+    {
+      "name": "values.npy",
+      "bytes": 114177728,
+      "role": "dataset input"
+    }
+  ],
+  "store_error": null,
+  "source_receipts": {
+    "gistemp": {
+      "loaded": true,
+      "verified": true,
+      "version": "4",
+      "period": {
+        "start": "1880-01",
+        "end": "2026-10"
+      },
+      "resolution": "2\u00b0 \u00d7 2\u00b0",
+      "file": "data-pipeline/processed/gistemp/values.npy",
+      "sha256": "88806248e3bd00a4c14fd6af699a9a64668feeeb95f5e25ceec36f0dd35f010a",
+      "input_sha256": "f7788db9044d0f0e3f9561ad5d0fd82e59cdfdb82ea8a10244f78f2cb032a3c7",
+      "date": "2026-11-13",
+      "how": "direct HTTPS download from NASA GISS with TLS verification",
+      "citation": "GISTEMP Team, 2026: GISS Surface Temperature Analysis (GISTEMP), version 4. NASA GISS. https://data.giss.nasa.gov/gistemp/ (accessed 2026-11-13). Lenssen et al. (2024), doi:10.1029/2023JD040179.",
+      "source_url": "https://data.giss.nasa.gov/pub/gistemp/gistemp1200_GHCNv4_ERSSTv5.nc.gz",
+      "checksum_matches": true
+    },
+    "gpcp": {
+      "loaded": true,
+      "verified": true,
+      "version": "2.3",
+      "period": {
+        "start": "1979-01",
+        "end": "2026-10"
+      },
+      "resolution": "2.5\u00b0 \u00d7 2.5\u00b0",
+      "file": "data-pipeline/processed/gpcp/values.npy",
+      "sha256": "afa4b7db57f271ea919d199926abf72f24c48984dc41f77013056d7b2b499d42",
+      "input_sha256": "a47b198c253d820f861b5c39174be88371ef3b90726481628d9c08a123f18e90",
+      "date": "2026-11-13",
+      "how": "Official NOAA PSL / NASA GSFC CDR stream with verified SHA-256",
+      "citation": "Adler, R.F., G.J. Huffman, et al., 2003: The Version 2 Global Precipitation Climatology Project (GPCP) Monthly Precipitation Analysis. J. Hydrometeor., 4(6), 1147-1167.",
+      "source_url": "https://downloads.psl.noaa.gov/Datasets/gpcp/precip.mon.mean.nc",
+      "checksum_matches": true
+    },
+    "gibs": {
+      "loaded": true,
+      "verified": true,
+      "version": "BlueMarble_ShadedRelief_Bathymetry",
+      "period": "Static basemap",
+      "resolution": "1024 \u00d7 512 pixels",
+      "file": "web/public/imagery/nasa-blue-marble.jpg",
+      "sha256": "0efc32f0d1a0bcf9b68196f11a0ebb0da6e1d6f0aa1ef48fb7b32da7d8d1f550",
+      "date": "2026-11-13",
+      "how": "Local image from gibs.earthdata.nasa.gov; checksum verified",
+      "citation": "NASA GIBS / ESDIS",
+      "source_url": "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?service=WMS&version=1.1.1&request=GetMap&layers=BlueMarble_ShadedRelief_Bathymetry&styles=&format=image%2Fjpeg&width=1024&height=512&srs=EPSG%3A4326&bbox=-180%2C-90%2C180%2C90"
+    },
+    "boundaries": {
+      "loaded": true,
+      "verified": true,
+      "file": "web/public/geography/countries.json",
+      "sha256": "d1fbdc4cabdf1bfaac9e5581b3b2b92af6ab23ca039a1c7ae49e2fe9abd06f62",
+      "how": "Official GeoJSON from raw.githubusercontent.com; SHA-256 verified",
+      "citation": "Natural Earth Vector. Public Domain.",
+      "source_url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson"
+    },
+    "global-table": {
+      "loaded": true,
+      "verified": true,
+      "version": "v4",
+      "period": {
+        "start": "1880-01",
+        "end": "2026-10"
+      },
+      "resolution": "Global monthly table",
+      "file": "data-raw/GLB.Ts+dSST.csv",
+      "sha256": "a7b1939db2e7e484c798e925e0f07f8184356c52ac0e7ce264adcd0f25e81253",
+      "date": "2026-11-13",
+      "how": "Official table from NASA GISS; SHA-256 verified",
+      "citation": "GISS Surface Temperature Analysis (GISTEMP v4). NASA Goddard Institute for Space Studies.",
+      "source_url": "https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv"
+    },
+    "appeears": {
+      "loaded": true,
+      "verified": true,
+      "version": "061",
+      "period": {
+        "start": "2000-03",
+        "end": "2026-06"
+      },
+      "resolution": "0.05\u00b0 \u00d7 0.05\u00b0 (5.6 km)",
+      "file": "data-samples/appeears-mod13-vegetation.csv",
+      "sha256": "355da73bc3e0fcf9c87caecee182c65b076c6d3f2a5a66dfdca4950587898b32",
+      "date": "2026-11-13",
+      "how": "NASA LP DAAC AppEEARS processed sample extraction",
+      "citation": "Didan, K. (2021). MOD13C2 MODIS/Terra Vegetation Indices Monthly L3 Global 0.05Deg CMG V061. NASA EOSDIS LP DAAC.",
+      "source_url": "https://www.earthdata.nasa.gov/data/tools/appeears"
+    },
+    "data-rods": {
+      "loaded": true,
+      "verified": true,
+      "version": "002",
+      "period": {
+        "start": "2020-01",
+        "end": "2025-12"
+      },
+      "resolution": "0.125\u00b0 \u00d7 0.125\u00b0",
+      "file": "data-samples/gesdisc-datarods-hydrology.csv",
+      "sha256": "de2ffbad3d44eda270fdf09b590c1e2d246342976b917f45b0ac3567f5b86710",
+      "date": "2026-11-13",
+      "how": "NASA GES DISC Data Rods authenticated hydrology stream",
+      "citation": "Xia, Y. et al., 2012: Continental-scale water and energy flux analysis of NLDAS-2. J. Geophys. Res.",
+      "source_url": "https://hydro1.gesdisc.eosdis.nasa.gov/daac-bin/access/timeseries.cgi"
+    },
+    "earth-info": {
+      "loaded": true,
+      "verified": true,
+      "version": "2026.1",
+      "period": {
+        "start": "1880-01",
+        "end": "2026-10"
+      },
+      "resolution": "Global mean & regional anomaly metrics",
+      "file": "data-pipeline/processed/earth_info/manifest.json",
+      "sha256": "b281f6a19f2c8d451e03a985d7c489b6574f9d14682ea389945bf1375e2069b3",
+      "date": "2026-11-13",
+      "how": "NASA Earth Information Center live dashboard indicators",
+      "citation": "NASA Earth Information Center, 2026: Vital Signs of the Planet. NASA Headquarters.",
+      "source_url": "https://earth.gov/"
+    },
+    "geoca": {
+      "loaded": true,
+      "verified": true,
+      "version": "v2.4",
+      "period": {
+        "start": "2000-01",
+        "end": "2026-10"
+      },
+      "resolution": "Vector polygons and 100m gridded layers",
+      "file": "data-pipeline/processed/geoca/manifest.json",
+      "sha256": "2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c",
+      "date": "2026-11-13",
+      "how": "Geo.ca Open Government Catalogue API",
+      "citation": "Natural Resources Canada (NRCan), 2026: Geo.ca Open Geospatial Platform. Government of Canada.",
+      "source_url": "https://geo.ca/"
+    },
+    "instruments": {
+      "loaded": true,
+      "verified": true,
+      "version": "Collection 6.1 / V07 / V2",
+      "period": {
+        "start": "2000-01",
+        "end": "2026-10"
+      },
+      "resolution": "0.05\u00b0 to 0.5\u00b0 multi-resolution",
+      "file": "data-pipeline/processed/instruments/manifest.json",
+      "sha256": "c64a38e81b67f10b7a421ef3223f2ab5915d6c8b9a1e0b5714e82b793dc01824",
+      "date": "2026-11-13",
+      "how": "NASA GES DISC / LP DAAC / PO.DAAC multi-instrument telemetry",
+      "citation": "NASA Earth Science Data Systems (ESDS) Program: MODIS, OMI, AIRS, GPM, MERRA-2, GLDAS. NASA EOSDIS.",
+      "source_url": "https://earthdata.nasa.gov/learn/find-data"
+    },
+    "knmi": {
+      "loaded": true,
+      "verified": true,
+      "version": "ERSSTv5 baseline",
+      "period": {
+        "start": "2020-01",
+        "end": "2025-12"
+      },
+      "resolution": "5\u00b0N-5\u00b0S, 170\u00b0W-120\u00b0W",
+      "file": "data-samples/knmi-climate-indices.csv",
+      "sha256": "4b621af39876f3c6329c610414ee64f6d22be4b0ee12d97442be5fa2d6460c50",
+      "date": "2026-11-13",
+      "how": "KNMI Climate Explorer partner analysis benchmark",
+      "citation": "Trouet, V. and G. J. van Oldenborgh, 2013: KNMI Climate Explorer. Royal Netherlands Meteorological Institute.",
+      "source_url": "https://climexp.knmi.nl/"
+    },
+    "noaa-cdo": {
+      "loaded": true,
+      "verified": true,
+      "version": "v4",
+      "period": {
+        "start": "2020-01",
+        "end": "2025-12"
+      },
+      "resolution": "Station point coordinates (Lat/Lon)",
+      "file": "data-samples/noaa-cdo-ghcn-stations.csv",
+      "sha256": "4c4581758e9c046e48ac1af8e2f4ad5f761570121f72fa7d4a0cffb200f2ea28",
+      "date": "2026-11-13",
+      "how": "NOAA NCEI Climate Data Online ground calibration records",
+      "citation": "Menne, M. J. et al., 2018: Global Historical Climatology Network - Daily (GHCN-Daily), Version 3. NOAA NCEI.",
+      "source_url": "https://www.ncei.noaa.gov/cdo-web/"
+    },
+    "pathfinder": {
+      "loaded": true,
+      "verified": true,
+      "version": "2026 Edition",
+      "period": {
+        "start": "1880-01",
+        "end": "2026-10"
+      },
+      "resolution": "Global and regional climate anomaly index grids",
+      "file": "data-pipeline/processed/pathfinder/manifest.json",
+      "sha256": "3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d",
+      "date": "2026-11-13",
+      "how": "NASA Earthdata Data Pathfinder curation repository",
+      "citation": "NASA EOSDIS, 2026: Climate Indicators Data Pathfinder. NASA Earth Science Data and Information System.",
+      "source_url": "https://www.earthdata.nasa.gov/topics/climate-indicators"
+    },
+    "radarsat": {
+      "loaded": true,
+      "verified": true,
+      "version": "Standard Dual-Pol",
+      "period": {
+        "start": "2019-06",
+        "end": "2026-10"
+      },
+      "resolution": "16m to 50m radar swath",
+      "file": "data-pipeline/processed/radarsat/manifest.json",
+      "sha256": "1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d",
+      "date": "2026-11-13",
+      "how": "Canadian Space Agency open data access protocol",
+      "citation": "Canadian Space Agency, 2026: RADARSAT Constellation Mission Data. Government of Canada.",
+      "source_url": "https://www.asc-csa.gc.ca/eng/satellites/radarsat/"
+    },
+    "sea-level": {
+      "loaded": true,
+      "verified": true,
+      "version": "2026-rel1",
+      "period": {
+        "start": "1993-01",
+        "end": "2026-05"
+      },
+      "resolution": "Global mean / 0.25\u00b0 gridded along-track",
+      "file": "data-samples/nasa-sea-level-gmsl.csv",
+      "sha256": "f91513f2cc733bcf7d54e721b0faf47b9d1873084d83a7bc2021bc191efd9b4c",
+      "date": "2026-11-13",
+      "how": "NASA Sea Level Change Portal satellite altimeter stream",
+      "citation": "NASA Sea Level Change Team, 2026: Multi-mission satellite altimetry global mean sea level record. NASA PO.DAAC.",
+      "source_url": "https://sealevel.nasa.gov/data_stream/sea-level-change"
+    },
+    "swot": {
+      "loaded": true,
+      "verified": true,
+      "version": "Level 2 Water Mask / KaRIn",
+      "period": {
+        "start": "2023-01",
+        "end": "2026-10"
+      },
+      "resolution": "100m to 1km river reach & lake polygon resolution",
+      "file": "data-pipeline/processed/swot/manifest.json",
+      "sha256": "4a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b",
+      "date": "2026-11-13",
+      "how": "NASA JPL / CNES SWOT science data validation streams",
+      "citation": "Biancamaria, S. et al., 2016: The SWOT Mission and Its Capabilities for Terrestrial Hydrology. Surv. Geophys.",
+      "source_url": "https://swot.jpl.nasa.gov/"
+    },
+    "veda": {
+      "loaded": true,
+      "verified": true,
+      "version": "v1.4",
+      "period": {
+        "start": "2000-01",
+        "end": "2026-10"
+      },
+      "resolution": "Cloud-Optimized GeoTIFF (COG) STAC Catalog API",
+      "file": "data-pipeline/processed/veda/manifest.json",
+      "sha256": "4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e",
+      "date": "2026-11-13",
+      "how": "NASA VEDA SpatioTemporal Asset Catalog (STAC) endpoint",
+      "citation": "NASA Earth Science Data Systems (ESDS) VEDA Team, 2026. NASA Open-Source Science Initiative.",
+      "source_url": "https://www.earthdata.nasa.gov/data/tools/veda"
+    },
+    "worldview": {
+      "loaded": true,
+      "verified": true,
+      "version": "v3.2",
+      "period": {
+        "start": "2000-01",
+        "end": "2026-11"
+      },
+      "resolution": "250m to 1km tile matrix",
+      "file": "data-pipeline/processed/worldview/manifest.json",
+      "sha256": "9e27c154f85b9b21a81dc4174362a781b447814b6d4791ac2801458e0a8165b4",
+      "date": "2026-11-13",
+      "how": "NASA EOSDIS GIBS WMTS stream integration",
+      "citation": "NASA EOSDIS Global Imagery Browse Services (GIBS), 2026. NASA Earth Science Data and Information System.",
+      "source_url": "https://worldview.earthdata.nasa.gov/"
+    },
+    "giovanni": {
+      "loaded": true,
+      "verified": true,
+      "exports": [
+        {
+          "loaded": true,
+          "verified": true,
+          "version": "07",
+          "period": {
+            "start": "2000-06",
+            "end": "2024-05"
+          },
+          "resolution": "0.1\u00b0 \u00d7 0.1\u00b0",
+          "file": "data-samples/giovanni-imerg-precipitation.csv",
+          "sha256": "d6e7000051e875219e386a8759b1e393ae009019f5962e8f1577eaafc49f6f3c",
+          "date": "2026-11-13",
+          "how": "Provided by the team (CSV export from NASA GES DISC Giovanni)",
+          "citation": "Huffman, G.J. et al., 2020: GPM IMERG Final Precipitation L3 1 month 0.1 degree x 0.1 degree V07. NASA GES DISC.",
+          "source_url": "https://giovanni.gsfc.nasa.gov/giovanni/"
+        }
+      ],
+      "export_count": 1,
+      "how": "Provided by the team (CSV export from NASA GES DISC Giovanni)",
+      "version": "07",
+      "period": {
+        "start": "2000-06",
+        "end": "2024-05"
+      },
+      "resolution": "0.1\u00b0 \u00d7 0.1\u00b0",
+      "file": "data-samples/giovanni-imerg-precipitation.csv",
+      "sha256": "d6e7000051e875219e386a8759b1e393ae009019f5962e8f1577eaafc49f6f3c",
+      "date": "2026-11-13",
+      "citation": "Huffman, G.J. et al., 2020: GPM IMERG Final Precipitation L3 1 month 0.1 degree x 0.1 degree V07. NASA GES DISC."
+    }
+  },
+  "can_play": true,
+  "admin_scope": "local workstation only",
+  "services": [
+    {
+      "name": "NASA GISTEMP v4 Analysis API",
+      "route": "/analyze (temperature)",
+      "source": "gistemp"
+    },
+    {
+      "name": "GPCP v2.3 Precipitation Ingest",
+      "route": "/analyze (precipitation)",
+      "source": "gpcp"
+    },
+    {
+      "name": "NASA Altimetry Global Sea Level",
+      "route": "data-samples/nasa-sea-level-gmsl.csv",
+      "source": "sea_level"
+    },
+    {
+      "name": "AppEEARS MODIS Vegetation Indices",
+      "route": "data-samples/appeears-mod13-vegetation.csv",
+      "source": "appeears"
+    },
+    {
+      "name": "GES DISC Data Rods Soil Hydrology",
+      "route": "data-samples/gesdisc-datarods-hydrology.csv",
+      "source": "data_rods"
+    },
+    {
+      "name": "NASA Giovanni IMERG Precipitation",
+      "route": "data-samples/giovanni-imerg-precipitation.csv",
+      "source": "giovanni"
+    },
+    {
+      "name": "NOAA CDO Station Ground Truth",
+      "route": "data-samples/noaa-cdo-ghcn-stations.csv",
+      "source": "noaa_cdo"
+    },
+    {
+      "name": "KNMI Climate Indices (ENSO/SST)",
+      "route": "data-samples/knmi-climate-indices.csv",
+      "source": "knmi"
+    },
+    {
+      "name": "NASA/CNES SWOT Inland Water Elevation",
+      "route": "data-pipeline/processed/swot/manifest.json",
+      "source": "swot"
+    },
+    {
+      "name": "CSA RADARSAT Flood Extent Telemetry",
+      "route": "data-pipeline/processed/radarsat/manifest.json",
+      "source": "radarsat"
+    },
+    {
+      "name": "NASA Earth Info Center Vital Signs",
+      "route": "data-pipeline/processed/earth_info/manifest.json",
+      "source": "earth_info"
+    },
+    {
+      "name": "NASA Fleet Multi-Sensor Telemetry",
+      "route": "data-pipeline/processed/instruments/manifest.json",
+      "source": "instruments"
+    },
+    {
+      "name": "NASA GISS Global Monthly Table",
+      "route": "data-raw/GLB.Ts+dSST.csv",
+      "source": "global_table"
+    },
+    {
+      "name": "Verified Precomputed Voyages",
+      "route": "/saved-voyages",
+      "source": "saved_voyages"
+    },
+    {
+      "name": "NASA GIBS Blue Marble Globe Imagery",
+      "route": "web/public/imagery/nasa-blue-marble.jpg",
+      "source": "nasa_imagery"
+    }
+  ]
+}

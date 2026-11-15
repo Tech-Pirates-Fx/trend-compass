@@ -1,0 +1,5 @@
+Launching local Chromium
+Browser launched
+Opening voyage
+Page loaded
+PASS M0: boot, 16:9, no scroll, keyboard sail, enter beacon, 8 sequential screenshots, mobile fit, no page errors

@@ -1,0 +1,25 @@
+# Title: Area-Averaged Time Series
+# Dataset: GPM_3IMERGM v07 (Monthly Precipitation Rate)
+# Source: NASA GES DISC Giovanni (https://giovanni.gsfc.nasa.gov/giovanni/)
+# Variable: Precipitation (precipitation)
+# Units: mm/day
+# Spatial Bounding Box: -15.0, 12.0, 15.0, 18.0
+# Temporal Range: 2000-06 to 2024-05
+date,precipitation
+2000-06,2.41
+2000-07,3.85
+2000-08,4.12
+2000-09,2.89
+2000-10,1.05
+2000-11,0.12
+2000-12,0.03
+2001-01,0.01
+2001-02,0.02
+2001-03,0.08
+2001-04,0.45
+2001-05,1.20
+2001-06,2.55
+2001-07,3.92
+2001-08,4.30
+2001-09,2.95
+2001-10,1.10

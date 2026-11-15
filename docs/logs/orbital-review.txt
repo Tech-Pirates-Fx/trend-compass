@@ -1,0 +1,10 @@
+2026-11-14 local implementation verification
+Build: PowerShell in web/: NEXT_DIST_DIR=.next-ui-orbit, PY_API_URL=http://127.0.0.1:8001, npm run build. Exit 0; 15/15 static generation. See orbital-build.txt.
+Backend: python -m pytest -q. Exit 0, 24 passed; deprecation warning retained in orbital-backend-tests.txt.
+UI helpers: node web/scripts/audit-ui.mjs. Exit 0, 10 checks; orbital-ui-checks.txt.
+Evidence log: node web/scripts/audit-expedition.mjs. Exit 0, 4 checks; orbital-expedition-tests.txt. Earlier test harness recursion failure corrected with leaf guard; app output was not altered to satisfy checks.
+Media: python web/scripts/render-orbital.py. Exit 0; 88726-byte MP4, 12 seconds, 24fps, 960x540. Alpha decoding of original atlas min/max 0/254. Source image and video are decorative.
+Browser: in-app browser via CUA at localhost:3103, actual backend gistemp port8001. India returned is_mock=false source receipt, 1762 observations, rate +0.089 C anomaly/decade, displayed CI [0.084,0.094], p4.836e-7, significant. Full 1880-01 to2026-10 record. Arctic default box returned inconclusive with missing-data warning; skipped prediction preserved. Save log click visibly reached Voyage recorded. No significant outcome was forced.
+Browser playback read: duration12, paused=false, readyState4. Pause control read paused=true. Off-home video paused. Resume URL after reload preserved variable, region, full dates, bbox, resolution, STL and step3.
+Screenshots requested at 1440x1000 and390x844; measured phone innerWidth325/scrollWidth317 due Windows scaling. Phone guide minimized. Viewport reset after checks.
+Unverified: physical device testing; OS download delivery (event capture timeout); custom native month edits (automation values reverted to full record); independent emulation of reduced motion, saveData, hidden tab or autoplay denial. Those fallback branches were source-reviewed. No custom-period UI success claimed.

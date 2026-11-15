@@ -1,0 +1,42 @@
+2026-11-14 ANTI UI-adventure-game QA Log
+
+Scope: Single playable temperature mission with Space + Pirate + Ship identity, grounded Piper mascot, minimal HUD, and verified NASA GISTEMP observations.
+
+Verified Criteria:
+1. Full-Viewport Frame:
+   - Route: http://localhost:3000/play
+   - Isolated in web/components/AppShell.tsx: suppresses standard navbar, footer, marketing hero, floating mascot, and dashboard card grid.
+   - Panoramic Star Galleon cockpit viewport with starry nebula backdrop and metallic illustrated deck floor (adventure-deck-floor) anchored at the bottom.
+   - Minimal Game HUD: Star Galleon crest, Web Audio SFX toggle, 5-station mission progression tracker (Brief -> Target -> Hunch -> NASA Scan -> Evidence), data sensor live/off pill, and leave ship button.
+
+2. Grounded Character Mascot (Piper):
+   - Original full-body character sprite grounded with boots touching the deck floor at the bottom-left (h-[52vh] sm:h-[62vh] max-h-[520px]).
+   - Consistent poses:
+     * web/public/mascot/piper-fullbody-intro.png (welcoming pose holding brass astrolabe)
+     * web/public/mascot/piper-fullbody-thinking.png (thoughtful pose, hand to chin)
+     * web/public/mascot/piper-fullbody-discovery.png (celebratory pose pointing with glowing star astrolabe)
+   - Dialogue console framed in deep cyan glass with riveted brass border and gold nameplate tab ("PIPER · STAR GALLEON NAVIGATOR"), matching the RPG interaction style of Henry's Farm Adventures.
+
+3. Mission Progression:
+   - Scene 1 (Briefing): Piper dialogue "Help me discover how temperature changed in a place you choose." with tactile [ Step Up to the Nav Table > ] and [ Skip ⏭ ] buttons.
+   - Scene 2 (Navigation Table): Planetary Astrolabe Holotank embedding 3D rotating GlobeCanvas, country search input, and quick preset buttons (India, Brazil, Australia, Kenya, USA, Egypt, Japan, Norway). Retains country name and coordinates. [ Lock Target & Set Prediction > ].
+   - Scene 3 (Prediction): Piper thoughtful pose. Dialogue asking for player hunch. 3 tactile illustrated cards: Rising (+🌡️), Falling (-❄️), Not sure (~⚖️). [ Launch NASA Sensor Scan 🛰️ ].
+   - Scene 4 (NASA Sensor Scan): Animated 360° radar sweep beam over Holotank, Web Audio sonar pings, live streaming diagnostic telemetry ticks, calling real /api/py/analyze backend.
+   - Scene 5 (Discovery & Evidence): Celebratory Piper pose. Custom dialogue debrief comparing player hunch with real data. Concise evidence card: Verdict (Statistically Significant Warming), Rate (+0.16 °C/decade), 95% CI [+0.08 °C, +0.23 °C], Observations (252 monthly records, 2000-2020), p-value (p = 0.0013, p < 0.05), and plain-language takeaway.
+
+4. Optional Scientific Drawer:
+   - [ Inspect Scientific Log & Charts ] button slides in full-height drawer on right.
+   - Contains:
+     * Interactive Plotly TimeSeriesChart (raw observations + deseasonalized line + Theil-Sen trend line)
+     * StatsDetailsTable (Theil-Sen vs OLS vs Mann-Kendall statistics)
+     * ProvenancePanel (NASA GISS GISTEMP v4 provenance, version, SHA-256 verification hash, citation)
+
+5. Audio & Data Controls:
+   - Web Audio API synthesizer in web/lib/game-audio.ts: click, select, scan sonar, and fanfare sounds without external audio assets.
+   - Master data switch OFF displays SENSORS OFF in HUD and provides in-game one-click restore button (calling PUT /api/data-control).
+   - Real NASA GISTEMP data verified: India returns 252 monthly observations, slope +0.157 °C/decade, p=0.00134.
+
+6. Testing & Compilation:
+   - Backend Pytest: 29/29 passed in api/tests (test_adapters, test_api, test_data_control, test_gistemp, test_stats).
+   - Production Build: 18/18 static and dynamic routes compiled green with zero TypeScript errors.
+   - Screenshots captured in docs/screenshots/game-scene-*.png.

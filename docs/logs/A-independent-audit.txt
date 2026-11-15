@@ -1,0 +1,105 @@
+Western Arctic series error 5.329070518200751e-15 independent HR 0.12369523989119832 API HR 0.1237059880648892
+East Antarctic series error 5.329070518200751e-15 independent HR 0.31522624958967915 API HR 0.31522624958967915
+Bering Strait series error 4.440892098500626e-15 independent HR 0.11467301751154892 API HR 0.11466443348897148
+Sahel series error 2.220446049250313e-15 independent HR 9.78668482094967e-07 API HR 9.752959906350611e-07
+Amazon region series error 1.3322676295501878e-15 independent HR 1.3961199413501971e-16 API HR 2.220446049250313e-16
+{
+  "input": "Official NASA GISS grid acquired 2026-11-13",
+  "start": "2001-01",
+  "end": "2026-10",
+  "regions": [
+    {
+      "region": "Western Arctic",
+      "bbox": {
+        "south": 68,
+        "west": -160,
+        "north": 75,
+        "east": -130
+      },
+      "observations": 310,
+      "slope_per_decade": 0.35596213087067596,
+      "mk_p": 0.025204567109628352,
+      "hamed_rao_p": 0.12369523989119832,
+      "api_rate": 0.356,
+      "api_hr_p": 0.1237059880648892,
+      "max_series_abs_difference": 5.329070518200751e-15,
+      "verdict": "not_significant"
+    },
+    {
+      "region": "East Antarctic",
+      "bbox": {
+        "south": -75,
+        "west": 60,
+        "north": -65,
+        "east": 100
+      },
+      "observations": 310,
+      "slope_per_decade": -0.13477250944718208,
+      "mk_p": 0.316712197781717,
+      "hamed_rao_p": 0.31522624958967915,
+      "api_rate": -0.1348,
+      "api_hr_p": 0.31522624958967915,
+      "max_series_abs_difference": 5.329070518200751e-15,
+      "verdict": "not_significant"
+    },
+    {
+      "region": "Bering Strait",
+      "bbox": {
+        "south": 62,
+        "west": 165,
+        "north": 72,
+        "east": -160
+      },
+      "observations": 310,
+      "slope_per_decade": 0.3211078657054458,
+      "mk_p": 0.01990266354536061,
+      "hamed_rao_p": 0.11467301751154892,
+      "api_rate": 0.3211,
+      "api_hr_p": 0.11466443348897148,
+      "max_series_abs_difference": 4.440892098500626e-15,
+      "verdict": "not_significant"
+    },
+    {
+      "region": "Sahel",
+      "bbox": {
+        "south": 12,
+        "west": -15,
+        "north": 18,
+        "east": 15
+      },
+      "observations": 310,
+      "slope_per_decade": 0.24050504331176598,
+      "mk_p": 9.039267778718802e-08,
+      "hamed_rao_p": 9.78668482094967e-07,
+      "api_rate": 0.2405,
+      "api_hr_p": 9.752959906350611e-07,
+      "max_series_abs_difference": 2.220446049250313e-15,
+      "verdict": "significant"
+    },
+    {
+      "region": "Amazon region",
+      "bbox": {
+        "south": -10,
+        "west": -70,
+        "north": 2,
+        "east": -55
+      },
+      "observations": 310,
+      "slope_per_decade": 0.2600992714520373,
+      "mk_p": 2.3996761392278615e-14,
+      "hamed_rao_p": 1.3961199413501971e-16,
+      "api_rate": 0.2601,
+      "api_hr_p": 2.220446049250313e-16,
+      "max_series_abs_difference": 1.3322676295501878e-15,
+      "verdict": "significant"
+    }
+  ],
+  "independent_global": {
+    "months": 1762,
+    "mean_difference": -0.0007847959697430885,
+    "mae": 0.012006232446953445,
+    "rmse": 0.015474634220357416
+  },
+  "hr_agreement": false,
+  "conclusion": "Regional means, pairwise median slopes and tie-corrected original MK agree within stated tolerances. Hamed\u2013Rao agreement is explicitly reported above. Global comparison is untuned; published aggregation is not expected to be identical."
+}

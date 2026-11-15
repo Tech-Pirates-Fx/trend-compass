@@ -1,0 +1,5 @@
+PASS significant: export preserves real evidence, uncertainty and provenance despite opposite prediction
+PASS not_significant: export preserves real evidence, uncertainty and provenance despite opposite prediction
+PASS inconclusive: export preserves real evidence, uncertainty and provenance despite opposite prediction
+PASS saved voyages do not inherit a live investigation prediction
+4 focused expedition checks passed. Browser download delivery is a separate manual check.

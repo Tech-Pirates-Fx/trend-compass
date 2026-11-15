@@ -1,0 +1,11 @@
+{
+  "layer": "ne_110m_admin_0_countries",
+  "source_url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson",
+  "retrieval_date": "2026-11-13",
+  "sha256": "d1fbdc4cabdf1bfaac9e5581b3b2b92af6ab23ca039a1c7ae49e2fe9abd06f62",
+  "size_bytes": 194187,
+  "usage": "Planetary boundary polygon layer for interactive 3D astrolabe and country selection",
+  "credit": "Natural Earth Vector. Public Domain.",
+  "documentation": "https://www.naturalearthdata.com/",
+  "verified": true
+}

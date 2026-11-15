@@ -1,0 +1,17 @@
+fastapi>=0.112.0,<0.115.0
+uvicorn[standard]>=0.29.0,<1.0.0
+pydantic>=2.8.0,<2.9.0
+pydantic-core>=2.20.0,<2.21.0
+numpy>=1.26.0
+pandas>=2.2.0
+scipy>=1.12.0
+statsmodels>=0.14.0
+pymannkendall>=1.4.3
+pytest>=8.0.0
+httpx>=0.27.0
+xarray>=2024.0.0
+h5netcdf>=1.3.0
+h5py>=3.10.0
+# Build-time encoder for the original decorative orbital video (not used by API).
+imageio-ffmpeg==0.6.0
+

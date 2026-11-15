@@ -1,0 +1,5 @@
+page.waitForFunction: Timeout 30000ms exceeded.
+    at D:\Git\nasa-app\web\scripts\smoke-voyage.cjs:10:53 {
+  log: [],
+  name: 'TimeoutError'
+}

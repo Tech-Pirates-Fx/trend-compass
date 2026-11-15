@@ -1,0 +1,9 @@
+U1 implementation, 2026-11-13 | CODEX
+Scope: web/app/globals.css, layout.tsx; Navbar, Footer, new VoyageUI.tsx.
+Implemented dark-first navy/teal/gold tokens, system display and monospace fonts (no downloads), glass cards, compass navigation, Tech Pirates footer, persistent light/dark control, skip link, visible keyboard focus and reduced-motion CSS.
+Reusable GlassCard, Badge, HudFrame, SectionHeader, VerdictBadge and ProvenancePanel added. Provenance absent state states unknown; provisional source is labelled; source links restricted to HTTP(S). These components are ready for U2 integration.
+MOCK banner implementation unchanged. Removed hardcoded online/mock status from footer; no NASA measurements, citations or results invented. No backend or pipeline edits, no dependencies installed.
+Verification: npm run build first compiled and typechecked, then failed collecting /_document; a dev preview had been started concurrently in the same output folder. Stopped owned preview process and removed only resolved D:\Git\nasa-app\web\.next cache before one clean retry. Outputs: U1-build.txt, U1-build-clean.txt.
+Browser visual verification unavailable: in-app browser could not reach http://localhost:3000 (ERR_CONNECTION_TIMED_OUT). No screenshots or visual contrast certification claimed.
+Next: U2 page integration; U3 interactive globe/country selection; U4 atmosphere effects. Official NASA provenance remains a data-track dependency, not a block on UI construction.
+Clean retry result: FAILED with EPERM creating web/.next/server/app/results. Two build attempts reached failures, so stopped per playbook. Full build remains unverified; first attempt did pass compilation and TypeScript/lint stage. U1 implementation is complete but task is PARTIAL pending build/visual QA.

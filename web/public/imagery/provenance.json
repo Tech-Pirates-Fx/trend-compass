@@ -1,0 +1,13 @@
+{
+  "layer": "BlueMarble_ShadedRelief_Bathymetry",
+  "source_url": "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?service=WMS&version=1.1.1&request=GetMap&layers=BlueMarble_ShadedRelief_Bathymetry&styles=&format=image%2Fjpeg&width=1024&height=512&srs=EPSG%3A4326&bbox=-180%2C-90%2C180%2C90",
+  "capabilities_url": "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?service=WMS&version=1.1.1&request=GetCapabilities",
+  "retrieval_date": "2026-11-13",
+  "sha256": "0efc32f0d1a0bcf9b68196f11a0ebb0da6e1d6f0aa1ef48fb7b32da7d8d1f550",
+  "size_bytes": 86648,
+  "width": 1024,
+  "height": 512,
+  "usage": "Contextual imagery only; not a temperature or precipitation series",
+  "credit": "NASA GIBS / ESDIS",
+  "documentation": "https://nasa-gibs.github.io/gibs-api-docs/"
+}

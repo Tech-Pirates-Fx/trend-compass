@@ -1,0 +1,9 @@
+2026-11-14 U6 browser evidence (CUA, local real GISTEMP backend)
+Home: India selection -> /play with same bbox; Mission: India directly, no region reselection.
+Custom native inputs: 2000-01 to2020-12 committed in React and used by scan; returned 252 points, rate0.173 C anomaly/decade, interval[0.099,0.246], p0.0005548 displayed in real evidence. Same /play mission route.
+Daylight: dark=false; body background rgb(234,242,238), text rgb(19,46,56); toggled back to dark.
+Data console: master off saved successfully via protected Next route; Play showed Mission offline and no enabled observation data. Master restored; Ship systems online verified; individual sources left enabled.
+2D: dropdown India set box7.966..35.494 /68.177..97.403; click labelled Pakistan SVG polygon set23.69..37.13 /60.87..77.84, Lock destination showed Mission: Pakistan.
+Piper: framed teal/navy/brass comms portrait; minimized on phone. A stale dialogue while locked was found and corrected after the lock screenshot; the final state override was source/type checked.
+Phone: requested390x844, actual CSSinnerWidth325, scrollWidth317; desktop1440x1000. Viewport reset. Screenshots stored in docs/screenshots/game-v2-*.jpg.
+Limit: no physical device/usability study; custom two-corner geographic edge cases not exhaustively browser tested; no claim that archive works with the data-control service offline; no public auth or arbitrary CSV ingestion shipped.

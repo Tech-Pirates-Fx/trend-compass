@@ -1,0 +1,51 @@
+npm notice run trend-compass-web@1.0.0 build
+npm notice run next build
+  ▲ Next.js 14.2.23
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Skipping linting
+   Checking validity of types ...
+
+   We detected TypeScript in your project and reconfigured your tsconfig.json file for you. Strict-mode is set to false by default.
+   The following suggested values were added to your tsconfig.json. These values can be changed to fit your project's needs:
+
+   	- include was updated to add '.next-voyage-release/types/**/*.ts'
+
+   Collecting page data ...
+   Generating static pages (0/19) ...
+   Generating static pages (4/19) 
+   Generating static pages (9/19) 
+   Generating static pages (14/19) 
+ ✓ Generating static pages (19/19)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    102 kB          200 kB
+├ ○ /_not-found                          873 B          88.3 kB
+├ ○ /about                               19.4 kB         114 kB
+├ ƒ /api/data-control                    0 B                0 B
+├ ƒ /api/py/[...path]                    0 B                0 B
+├ ○ /crew                                166 B          87.6 kB
+├ ○ /data                                9.96 kB         104 kB
+├ ○ /demo                                166 B          87.6 kB
+├ ƒ /investigate                         166 B          87.6 kB
+├ ○ /judge                               166 B          87.6 kB
+├ ○ /members                             166 B          87.6 kB
+├ ○ /mission                             166 B          87.6 kB
+├ ƒ /play                                166 B          87.6 kB
+├ ○ /project-summary                     166 B          87.6 kB
+├ ƒ /results                             166 B          87.6 kB
+├ ○ /sources                             166 B          87.6 kB
+├ ○ /summary                             166 B          87.6 kB
+└ ○ /voyage                              3.42 kB        97.6 kB
++ First Load JS shared by all            87.4 kB
+  ├ chunks/117-1c83cbfa40e5b769.js       31.6 kB
+  ├ chunks/fd9d1056-ef27112f93c2803f.js  53.6 kB
+  └ other shared chunks (total)          2.16 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

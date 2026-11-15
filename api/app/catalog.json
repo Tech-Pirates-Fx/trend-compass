@@ -1,0 +1,92 @@
+[
+  {
+    "id": "air_temperature",
+    "name": "Surface Air Temperature",
+    "definition": "Average temperature of the air near Earth's surface. It is a primary indicator of climate variability and regional warming or cooling trends.",
+    "units": "°C",
+    "category": "atmosphere",
+    "typical_resolution": "monthly",
+    "available_resolutions": ["monthly", "daily"],
+    "temporal_coverage": {
+      "start": "2000-01",
+      "end": "2025-12"
+    },
+    "spatial_resolution_deg": 0.5,
+    "min_area_km2": 2500.0,
+    "max_area_km2": 50000000.0,
+    "is_placeholder": true,
+    "placeholder_note": "Placeholder dataset, to be replaced when real data sources are confirmed."
+  },
+  {
+    "id": "precipitation",
+    "name": "Total Precipitation",
+    "definition": "Total volume of rain and snow falling on the surface. Changes in precipitation patterns reveal regional shifts in drought and deluge risk.",
+    "units": "mm/month",
+    "category": "atmosphere",
+    "typical_resolution": "monthly",
+    "available_resolutions": ["monthly"],
+    "temporal_coverage": {
+      "start": "2000-01",
+      "end": "2025-12"
+    },
+    "spatial_resolution_deg": 0.5,
+    "min_area_km2": 2500.0,
+    "max_area_km2": 50000000.0,
+    "is_placeholder": true,
+    "placeholder_note": "Placeholder dataset, to be replaced when real data sources are confirmed."
+  },
+  {
+    "id": "vegetation_greenness",
+    "name": "Vegetation Greenness (NDVI)",
+    "definition": "Satellite index measuring photosynthetic density and canopy health. Tracks ecosystem shifts such as greening, browning, or land-use changes.",
+    "units": "NDVI (-1 to 1)",
+    "category": "land",
+    "typical_resolution": "monthly",
+    "available_resolutions": ["monthly"],
+    "temporal_coverage": {
+      "start": "2000-01",
+      "end": "2025-12"
+    },
+    "spatial_resolution_deg": 0.25,
+    "min_area_km2": 1500.0,
+    "max_area_km2": 50000000.0,
+    "is_placeholder": true,
+    "placeholder_note": "Placeholder dataset, to be replaced when real data sources are confirmed."
+  },
+  {
+    "id": "sea_surface_temperature",
+    "name": "Sea Surface Temperature (SST)",
+    "definition": "Temperature of the top millimeter to meter of the ocean. It regulates marine heatwaves, tropical cyclone energy, and marine biodiversity.",
+    "units": "°C",
+    "category": "ocean",
+    "typical_resolution": "monthly",
+    "available_resolutions": ["monthly", "daily"],
+    "temporal_coverage": {
+      "start": "2002-06",
+      "end": "2025-12"
+    },
+    "spatial_resolution_deg": 0.25,
+    "min_area_km2": 2500.0,
+    "max_area_km2": 50000000.0,
+    "is_placeholder": true,
+    "placeholder_note": "Placeholder dataset, to be replaced when real data sources are confirmed."
+  },
+  {
+    "id": "soil_moisture",
+    "name": "Volumetric Soil Moisture",
+    "definition": "Fraction of water contained in topsoil pores. Critical for agricultural yield forecasting and land-atmosphere moisture exchange.",
+    "units": "m³/m³",
+    "category": "land",
+    "typical_resolution": "monthly",
+    "available_resolutions": ["monthly"],
+    "temporal_coverage": {
+      "start": "2015-04",
+      "end": "2025-12"
+    },
+    "spatial_resolution_deg": 0.5,
+    "min_area_km2": 2500.0,
+    "max_area_km2": 50000000.0,
+    "is_placeholder": true,
+    "placeholder_note": "Placeholder dataset, to be replaced when real data sources are confirmed."
+  }
+]

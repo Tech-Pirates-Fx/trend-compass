@@ -1,0 +1,36 @@
+npm notice run trend-compass-web@1.0.0 build
+npm notice run next build
+  ▲ Next.js 14.2.23
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+
+   We detected TypeScript in your project and reconfigured your tsconfig.json file for you. Strict-mode is set to false by default.
+   The following suggested values were added to your tsconfig.json. These values can be changed to fit your project's needs:
+
+   	- include was updated to add '.next-ui-nasa-final/types/**/*.ts'
+
+   Collecting page data ...
+   Generating static pages (0/7) ...
+   Generating static pages (1/7) 
+   Generating static pages (3/7) 
+   Generating static pages (5/7) 
+ ✓ Generating static pages (7/7)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    5.53 kB         104 kB
+├ ○ /_not-found                          873 B          88.2 kB
+├ ○ /demo                                1.32 kB          96 kB
+├ ○ /investigate                         7.73 kB         107 kB
+└ ○ /results                             9.61 kB         104 kB
++ First Load JS shared by all            87.3 kB
+  ├ chunks/117-f821b37babfdc178.js       31.6 kB
+  ├ chunks/fd9d1056-c429ab523d77a92e.js  53.6 kB
+  └ other shared chunks (total)          2.1 kB
+
+
+○  (Static)  prerendered as static content
+

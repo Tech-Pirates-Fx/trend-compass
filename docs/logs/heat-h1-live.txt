@@ -1,0 +1,4 @@
+Catalog coverage: {"start":"1880-01","end":"2026-10"}
+{"start":"2021-11","end":"2026-10","observations":60,"verdict":"significant","rate":1.0859,"units":"°C anomaly","source":"https://data.giss.nasa.gov/pub/gistemp/gistemp1200_GHCNv4_ERSSTv5.nc.gz","verified":true}
+{"start":"1880-01","end":"2026-10","observations":1762,"verdict":"significant","rate":0.0886,"units":"°C anomaly","source":"https://data.giss.nasa.gov/pub/gistemp/gistemp1200_GHCNv4_ERSSTv5.nc.gz","verified":true}
+Invalid period: HTTP 422 preserved, no cache substitution.

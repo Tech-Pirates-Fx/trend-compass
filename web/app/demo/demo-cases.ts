@@ -1,0 +1,2 @@
+import { PRESET_REGIONS } from '../../lib/presets';
+export const DEMO_CASES=PRESET_REGIONS.slice(0,4).map((p,i)=>({id:p.id,title:p.name,bbox:p.bbox,description:['Inspect a northern region without presuming the direction of change.','Ask the same question in a southern region. Let the analysis return the result.','Explore a region across the date line. West is greater than east in this box.','Choose a measurement and an available record for this regional box.'][i]}));

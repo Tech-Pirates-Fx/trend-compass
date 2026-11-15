@@ -1,0 +1,11 @@
+npm notice run trend-compass-web@1.0.0 build
+npm notice run next build
+  ▲ Next.js 14.2.23
+
+   Creating an optimized production build ...
+Failed to compile.
+
+Error: EPERM: operation not permitted, mkdir 'D:\Git\nasa-app\web\.next-ui-build\static\chunks\app'
+
+
+> Build failed because of webpack errors

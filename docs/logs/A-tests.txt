@@ -1,0 +1,14 @@
+........................                                                 [100%]
+============================== warnings summary ===============================
+C:\Users\USER\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:40
+  C:\Users\USER\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 5 durations =============================
+3.10s call     api/tests/test_api.py::test_analyze_daily_resolution
+0.43s call     api/tests/test_stats.py::test_pure_noise_not_flagged_significant
+0.10s call     api/tests/test_adapters.py::test_opposite_trend_preset_pair
+0.08s call     api/tests/test_api.py::test_analyze_endpoint_full
+0.05s call     api/tests/test_gistemp.py::test_real_grid_golden_and_provenance
+24 passed, 1 warning in 6.42s

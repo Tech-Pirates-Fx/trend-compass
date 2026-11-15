@@ -1,0 +1,7 @@
+Launching local Chromium
+Browser launched
+Opening voyage
+Page loaded
+PASS M1: boot, 16:9, no scroll, keyboard sail, enter beacon, 15 sequential screenshots, mobile fit, no page errors
+PASS disabled source stops the game; no fallback observations
+PASS missing archetype fails honestly

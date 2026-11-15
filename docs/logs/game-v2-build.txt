@@ -1,0 +1,47 @@
+npm notice run trend-compass-web@1.0.0 build
+npm notice run next build
+  ▲ Next.js 14.2.23
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/17) ...
+   Generating static pages (4/17) 
+   Generating static pages (8/17) 
+   Generating static pages (12/17) 
+ ✓ Generating static pages (17/17)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                               Size     First Load JS
+┌ ○ /                                     3.31 kB         102 kB
+├ ○ /_not-found                           873 B          88.2 kB
+├ ○ /about                                185 B          94.3 kB
+├ ○ /crew                                 173 B          93.7 kB
+├ ○ /data                                 2.65 kB        96.8 kB
+├ ○ /demo                                 2.67 kB        96.8 kB
+├ ○ /investigate                          10.8 kB         110 kB
+├ ○ /judge                                185 B          94.3 kB
+├ ○ /members                              172 B          93.7 kB
+├ ○ /mission                              185 B          94.3 kB
+├ ○ /play                                 4.98 kB         115 kB
+├ ○ /project-summary                      185 B          94.3 kB
+├ ○ /results                              2.81 kB         108 kB
+├ ○ /sources                              138 B          87.5 kB
+└ ○ /summary                              185 B          94.3 kB
++ First Load JS shared by all             87.3 kB
+  ├ chunks/117-7da0a491333d65fe.js        31.6 kB
+  ├ chunks/fd9d1056-9c30db7e64ccde13.js   53.6 kB
+  └ other shared chunks (total)           2.11 kB
+
+Route (pages)                             Size     First Load JS
+─ ƒ /api/data-control                     0 B            83.8 kB
++ First Load JS shared by all             83.8 kB
+  ├ chunks/framework-f66176bb897dc684.js  44.8 kB
+  ├ chunks/main-ec992e4ac1ecafd2.js       36.8 kB
+  └ other shared chunks (total)           2.09 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

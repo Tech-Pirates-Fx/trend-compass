@@ -1,0 +1,99 @@
+=====================================================================
+Trend Compass - Localhost:3000 Repair & Verification Log
+Date: 2026-11-14
+Role: ANTI (Antigravity)
+=====================================================================
+
+1. ROOT CAUSE ANALYSIS & DIAGNOSTICS
+---------------------------------------------------------------------
+Failure A: /api/py/health returned 500
+- Diagnosis:
+  1) In start-all.bat, the backend launch command used:
+     "set PYTHONPATH=%ROOT_DIR% && set PORT=8000 && set DATA_ADAPTER=gistemp && set OPENBLAS_NUM_THREADS=1 && ..."
+     In Windows cmd.exe, trailing spaces before "&&" become part of the variable value.
+     Thus DATA_ADAPTER was set to "gistemp " (with a trailing space).
+  2) In api/app/adapters/__init__.py, get_adapter() read:
+     os.environ.get("DATA_ADAPTER", "gistemp").lower()
+     without .strip(), resulting in key lookup for "gistemp ", which failed and raised:
+     ValueError: Unknown DATA_ADAPTER 'gistemp '. Available: ['mock', 'gistemp']
+  3) In api/app/main.py, /health calls get_adapter(), which raised unhandled ValueError,
+     producing HTTP 500 Internal Server Error. The same error crashed /catalog, /timeseries, and /analyze.
+- Fix:
+  * In start-all.bat: use & without trailing spaces and quoted set syntax:
+    set "PYTHONPATH=%ROOT_DIR%" & set "PORT=8000" & set "DATA_ADAPTER=gistemp" & set "OPENBLAS_NUM_THREADS=1" & "!PYTHON_EXEC!" main.py
+  * In api/app/adapters/__init__.py: added .strip().lower() to get_adapter().
+  * In api/app/main.py: added .strip().lower() to adapter_name in health_check.
+  * In main.py: added .strip() to PORT and HOST env parsing.
+
+Failure B: /api/py/data-management returned 404
+- Diagnosis:
+  1) The Next.js rewrite rule in web/next.config.mjs forwards /api/py/:path* to http://127.0.0.1:8000/:path*.
+  2) The running process on port 8000 was started prior to U6 when api/app/data_control.py was written.
+     The router lacked GET/PUT /data-management and GET /saved-voyages.
+  3) Next.js 14 App Router dev server had not registered the Pages API route at web/pages/api/data-control.ts.
+- Fix:
+  * Started compatible backend on port 8000 with api.app.data_control router included.
+  * Created native App Router route handler web/app/api/data-control/route.ts for PUT /api/data-control,
+    and removed conflicting web/pages/ directory.
+
+Failure C: favicon.ico returned 404
+- Diagnosis:
+  No favicon file existed in web/public/ or web/app/. Browsers requesting /favicon.ico received 404.
+- Fix:
+  Generated valid 16x16 32-bit ICO icon (compass star on deep space navy disk) at web/public/favicon.ico.
+
+2. COMMANDS AND RESULTS
+---------------------------------------------------------------------
+Command: python scratch/verify_all.py
+Results:
+- GET /api/py/health -> 200 OK
+  {"status":"healthy","service":"trend-compass-api","phase":2,"adapter":"gistemp","is_mock":false,"verified":true,"detail":null}
+- GET /api/py/data-management -> 200 OK
+  controls={"enabled":true,"gistemp":true,"saved_voyages":true,"nasa_imagery":true}, can_play=true
+- GET /favicon.ico -> 200 OK, image/x-icon, 1150 bytes
+- POST /api/py/analyze (India bbox 8-37 N, 68-97 E, 2000-01 to 2020-12) -> 200 OK
+  dataset="GISTEMP v4 Land-Ocean Temperature Index", verified=true, is_mock=false
+  points=252, verdict="significant", rate_per_decade=0.157 °C anomaly, p_value=0.001339
+- GET /api/py/saved-voyages -> 200 OK
+- PUT /api/data-control (enabled=false) -> 200 OK, can_play=false
+- POST /api/py/analyze when OFF -> 503 Service Unavailable ("Mission unavailable: no enabled data for this operation...")
+- GET /api/py/saved-voyages when OFF -> 503 Service Unavailable ("Mission unavailable: no enabled data for this operation...")
+- PUT /api/data-control (enabled=true) -> 200 OK, can_play=true
+- POST /api/py/analyze after restore -> 200 OK, 252 observations
+- GET /api/py/saved-voyages after restore -> 200 OK
+
+All 29 pytest backend tests pass:
+  api/tests/test_adapters.py (4 passed)
+  api/tests/test_api.py (10 passed)
+  api/tests/test_data_control.py (5 passed)
+  api/tests/test_gistemp.py (4 passed)
+  api/tests/test_stats.py (6 passed)
+  Total: 29 passed in 21.34s
+
+Frontend production build (npm run build in web/):
+  18 static and dynamic routes compiled with zero errors.
+
+3. NORMAL STARTUP INSTRUCTIONS
+---------------------------------------------------------------------
+From repository root (D:\Git\nasa-app):
+
+Option 1: Automated Windows launcher (start-all.bat or start_all.bat)
+  Double-click or run:
+    start-all.bat
+  This detects Python (api\.venv or system), installs requirements if needed,
+  starts FastAPI on port 8000 (DATA_ADAPTER=gistemp, OPENBLAS_NUM_THREADS=1),
+  starts Next.js on port 3000 (PY_API_URL=http://127.0.0.1:8000), and opens http://localhost:3000.
+
+Option 2: Manual startup (two terminals)
+  Terminal 1 (Backend - FastAPI on Port 8000):
+    cd D:\Git\nasa-app
+    $env:PYTHONPATH="D:\Git\nasa-app"
+    $env:PORT="8000"
+    $env:DATA_ADAPTER="gistemp"
+    $env:OPENBLAS_NUM_THREADS="1"
+    .\api\.venv\Scripts\python.exe main.py
+
+  Terminal 2 (Frontend - Next.js on Port 3000):
+    cd D:\Git\nasa-app\web
+    $env:PY_API_URL="http://127.0.0.1:8000"
+    npm run dev

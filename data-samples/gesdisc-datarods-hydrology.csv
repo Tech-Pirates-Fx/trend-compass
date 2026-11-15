@@ -1,0 +1,15 @@
+# Title: NASA GES DISC Hydrology Data Rods Service
+# Dataset: NLDAS_FORA0125_H.002 Soil Moisture & Precipitation
+# Source: NASA GES DISC (https://hydro1.gesdisc.eosdis.nasa.gov/daac-bin/access/timeseries.cgi)
+# Variable: 0-10cm Soil Moisture Content
+# Units: kg/m^2
+date,soil_moisture_0_10cm
+2020-01,24.5
+2020-04,28.2
+2020-07,18.9
+2020-10,21.4
+2021-01,23.8
+2021-07,16.5
+2022-07,15.2
+2023-07,17.4
+2024-07,18.1

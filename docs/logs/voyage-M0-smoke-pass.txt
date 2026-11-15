@@ -1,0 +1,18 @@
+Launching local Chromium
+Browser launched
+Opening voyage
+Page loaded
+Skip to content
+
+Loading verified offline charts…
+
+Chart unavailable
+
+Case checksum mismatch.
+
+Data ManagementRetry
+page.waitForFunction: Timeout 30000ms exceeded.
+    at D:\Git\nasa-app\web\scripts\smoke-voyage.cjs:12:57 {
+  log: [],
+  name: 'TimeoutError'
+}

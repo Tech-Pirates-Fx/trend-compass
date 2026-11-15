@@ -1,0 +1,5 @@
+npm notice run trend-compass-web@1.0.0 npx
+npm notice run tsc --noEmit
+components/game/voyage/scenes/boot.ts(39,3): error TS2416: Property 'sound' in type 'Sea' is not assignable to the same property in base type 'Scene'.
+  Type '() => void' is not assignable to type 'NoAudioSoundManager | HTML5AudioSoundManager | WebAudioSoundManager'.
+components/game/voyage/scenes/boot.ts(39,3): error TS2425: Class 'Scene' defines instance member property 'sound', but extended class 'Sea' defines it as instance member function.

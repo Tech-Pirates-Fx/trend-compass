@@ -1,0 +1,18 @@
+# Title: Global Mean Sea Level (GMSL) Variation
+# Source: NASA Sea Level Change Portal (https://sealevel.nasa.gov/)
+# Missions: TOPEX/Poseidon, Jason-1, Jason-2, Jason-3, Sentinel-6MF
+# Units: mm (GIA-applied variation from 1993 baseline)
+year,gmsl_variation_mm
+1993.04,-38.2
+1994.04,-35.1
+1995.04,-31.4
+1996.04,-28.9
+1997.04,-24.5
+1998.04,-19.8
+1999.04,-18.2
+2000.04,-15.6
+2005.04,1.2
+2010.04,18.4
+2015.04,38.1
+2020.04,59.3
+2025.04,78.6

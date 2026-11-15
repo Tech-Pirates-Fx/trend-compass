@@ -1,0 +1,3 @@
+{"status":"healthy","service":"trend-compass-api","phase":2,"adapter":"gistemp","is_mock":false,"verified":true,"detail":null}
+Catalog: surface_temperature_anomaly; record=1880-01 to 2026-10; placeholder=False
+Analyze: is_mock=False; verified=True; observations=310; rate=0.6022; verdict=significant; primary=mann_kendall_hamed_rao

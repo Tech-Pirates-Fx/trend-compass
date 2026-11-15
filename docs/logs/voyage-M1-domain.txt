@@ -1,0 +1,9 @@
+PASS boot, distance fuel, near beacon prerequisite
+PASS exact net region and receipt matching
+PASS tool prerequisites and no reward farming
+PASS mismatched tokens bounce and limitation required
+PASS verified engine result succeeds and is idempotent
+PASS overconfident wrong claim triggers mutiny and one-click retry
+PASS calibration matrix rewards valid non-significance equally
+PASS mock, unverified and incomplete data are rejected
+8 behavioral groups passed; NASA case=first-light, HR=0, slope=0.2611

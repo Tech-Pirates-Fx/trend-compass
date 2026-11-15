@@ -1,0 +1,15 @@
+T0 source audit, 2026-11-13, CODEX
+Evidence: READ local committed source at 972de82; git diff -- web api main.py setup.py was empty.
+No runtime claims or NASA-data TESTED claims are made.
+1 FIXED: web/app/layout.tsx renders <MockBanner />; web/components/MockBanner.tsx reads checkHealth().is_mock. Caveat: health failure hides banner, so unknown status is not visibly distinguished.
+2 FIXED: api/app/adapters/mock.py daily branch uses date_range(freq="D"), 365.25 steps/year; monthly uses MS and 12. api/app/main.py sets STL period 365 for daily. Synthetic data remains explicitly mock; leap-year statistical adequacy is outside T0.
+3 FIXED: web/app/investigate/page.tsx derives year bounds from temporal_coverage, blocks start>=end via isFormValid and disabled button. api/app/main.py validate_date_range raises HTTP 422 and is invoked for timeseries and analyze. MockAdapter raises on empty ranges rather than falling back.
+4 OPEN (partially addressed): schema permits west>east and computes wrapped center/width; mock uses center_lon; MapSelector splits crossing boxes and wraps click-to-center. Two-click rectangle selection exists, but handleCompleteBox sorts longitude with min/max, so drawing corners at 170 and -170 selects the 340-degree box rather than the 20-degree crossing. Recommend explicit crossing selection in ANTI T4; no interactive browser test performed.
+5 OPEN (partially addressed): investigate year bounds use catalog metadata, but default/fallback dates remain 2000-01/2025-12; results defaults and demo-cases.ts hardcode these dates. presets.ts has no year fields. Remove remaining fixed defaults in ANTI T4.
+6 FIXED: web/app/results/page.tsx looks up methods[summary.primary_method] and displays display_name in Primary Method card. Other method-specific tooltips remain outside this narrow finding.
+7 FIXED as listed: api/main.py and setup.py do not exist (git ls-files and Test-Path checked). main.py is a launcher importing api.app.main.app, not a second FastAPI definition.
+8 OPEN: presets.ts asserts East Antarctic cooling/ice shelf stability and opposite Arctic slopes; demo-cases.ts asserts opposite cooling and physical explanations; app/page.tsx promotes warming-here/cooling-there. No citations in these reviewed claim files. These are source-review findings, not externally verified scientific conclusions. ANTI T4 removes mock-era stories; T12 audits remaining claims.
+9 OPEN: all four web/public/demo/*.json declare source MOCK (synthetic, not real measurements) and is_mock:true. No inference of real measurements; ANTI T4 must regenerate from real data.
+Review commands: git show HEAD:<named source>; git grep -n on the named source paths; git ls-files api/main.py setup.py; Test-Path for both absent paths.
+Verification: npm run build (web/) exited 0; output docs/logs/T0-build.txt.
+python -m pytest was run once; collected 20 tests and reported four adapter tests passed, then made no further visible progress before manual interruption (exit 1). Suite NOT verified; see docs/logs/T0-pytest.txt. No claim that all tests pass.

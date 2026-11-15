@@ -1,0 +1,19 @@
+PASS Russia crosses the date line
+PASS USA box includes its islands without an almost-global span
+PASS Fiji crosses the date line
+PASS Antarctica retains the full longitude range
+PASS Delhi hits India; an Indian Ocean point does not
+PASS Fiji hit testing works on both sides of the date line
+PASS All source country vertices fit their returned bounds
+PASS Country links preserve crossing coordinates
+PASS Record defaults and limits come from metadata
+dark #e8f2ef: 16.59:1
+dark #a0b6bc: 8.95:1
+dark #8ee3ce: 12.66:1
+dark #e8c284: 11.27:1
+light #142d35: 12.84:1
+light #47616a: 5.87:1
+light #08695e: 5.86:1
+light #80530a: 5.92:1
+PASS Text token contrast exceeds 4.5:1 in both themes
+10 focused UI checks passed. Pure geometry/date/token checks; no browser or NASA-data verification implied.

@@ -1,0 +1,1 @@
+world 1986-2025: 15813/16200 complete cells, BH cutoff=0.03809007124607287; PNG and JSON written

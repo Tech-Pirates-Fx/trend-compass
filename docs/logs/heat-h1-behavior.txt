@@ -1,0 +1,10 @@
+PASS report and completion cannot be reached without objectives
+PASS exact cached receipt is preserved; nearby coordinates, dates and settings rejected
+PASS wrong query, unverified input and mock input rejected
+PASS pinning is idempotent and comparison requires both receipts
+PASS overconfident comparison and report can be revised
+PASS all verdicts and both slope directions have valid endings without guessing rewards
+PASS replaced evidence invalidates pin, source inspection and comparison
+PASS incompatible periods rejected
+PASS save restore cannot grant evidence or completion and invalid versions reset
+9 behavioral checks passed. Mutated scientific outcomes are test-only fixtures.

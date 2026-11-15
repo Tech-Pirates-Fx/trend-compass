@@ -1,0 +1,1710 @@
+@import "leaflet/dist/leaflet.css";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root {
+  color-scheme: dark;
+  --background: #03080d; --foreground: #e8f2ef; --surface: rgba(10, 24, 34, 0.76);
+  --muted: #a0b6bc; --accent: #8ee3ce; --gold: #e8c284;
+  --line: rgba(148, 190, 190, 0.2); --grid: rgba(148, 190, 190, 0.035);
+  --nav: rgba(7, 18, 24, 0.88); --glow: rgba(92, 190, 170, 0.08);
+}
+.dark {
+  color-scheme: dark;
+  --background: #03080d; --foreground: #e8f2ef; --surface: rgba(10, 24, 34, 0.76);
+  --muted: #a0b6bc; --accent: #8ee3ce; --gold: #e8c284;
+  --line: rgba(148, 190, 190, 0.2); --grid: rgba(148, 190, 190, 0.035);
+  --nav: rgba(7, 18, 24, 0.88); --glow: rgba(92, 190, 170, 0.08);
+}
+body {
+  color: var(--foreground);
+  background-color: #03080c;
+  background-image: 
+    linear-gradient(180deg, rgba(3, 8, 13, 0.52) 0%, rgba(3, 8, 13, 0.72) 42%, rgba(3, 8, 13, 0.92) 80%, #03080c 100%),
+    url('/images/game-cockpit-bg.jpg');
+  background-position: center top;
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  position: relative;
+  font-family: "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+::selection { background: var(--accent); color: var(--background); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+.skip-link { position: fixed; top: -100px; left: 16px; z-index: 100; padding: 12px 20px; background: var(--foreground); color: var(--background); border-radius: 8px; }
+.skip-link:focus { top: 12px; }
+.eyebrow { font-family: "Cascadia Code",Consolas,monospace; font-size: 10px; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+.voyage-nav { background: rgba(6, 15, 21, 0.86); border-bottom: 1px solid rgba(148, 190, 190, 0.18); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35); }
+.compass-mark { display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid var(--line); border-radius: 50%; color: var(--gold); background: var(--surface); box-shadow: 0 0 28px var(--glow); }
+.voyage-link { padding: 9px 12px; font-size: 13px; color: var(--muted); border-radius: 6px; transition: all .2s; }
+.voyage-link:hover { color: var(--foreground); background: var(--glow); }
+.voyage-link.is-active {
+  color: #ffffff;
+  background: rgba(13, 148, 136, 0.22);
+  border: 1px solid rgba(45, 212, 191, 0.6);
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(45, 212, 191, 0.25), inset 0 0 8px rgba(45, 212, 191, 0.15);
+}
+.theme-toggle { display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 50%; color: var(--gold); }
+.theme-toggle:hover { background: var(--glow); }
+.voyage-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1.5px solid #2dd4bf; border-radius: 12px; padding: 10px 18px; background: #2dd4bf; color: #020617; font-size: 13px; font-weight: 800; box-shadow: 0 0 20px rgba(45, 212, 191, 0.35); transition: all 0.2s ease; }
+.voyage-button:hover { filter: brightness(1.12); transform: translateY(-1px); }
+.voyage-footer { border-top: 1px solid rgba(148, 190, 190, 0.18); background: rgba(6, 15, 21, 0.88); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: relative; z-index: 10; }
+.glass-card { background: rgba(7, 18, 26, 0.82); border: 1px solid rgba(148, 190, 190, 0.22); border-radius: 16px; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: 0 16px 48px rgba(0,0,0,.5), inset 0 1px 0 rgba(255, 255, 255, 0.08); }
+.hud-frame { position: relative; border: 1px solid var(--line); padding: 32px 24px 24px; border-radius: 3px; }
+.hud-frame::before,.hud-frame::after { content: ""; position: absolute; pointer-events: none; width: 14px; height: 14px; color: var(--gold); }
+.hud-frame::before { left: -1px; top: -1px; border-left: 2px solid; border-top: 2px solid; }
+.hud-frame::after { right: -1px; bottom: -1px; border-right: 2px solid; border-bottom: 2px solid; }
+.hud-label { position: absolute; top: -7px; left: 20px; padding: 0 8px; background: var(--background); }
+.voyage-badge { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); border-radius: 50px; padding: 6px 10px; font-size: 11px; font-weight: 600; line-height: 1.5; }
+.badge-neutral { color: var(--muted); }
+.badge-teal { color: var(--accent); background: var(--glow); }
+.badge-gold { color: var(--gold); }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: var(--muted); border: 2px solid var(--background); border-radius: 8px; }
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(0.8deg); }
+}
+.mascot-floating {
+  animation: float-gentle 3.5s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mascot-floating { animation: none !important; }
+}
+/* Tech Pirates expedition interface. Decorative layers never encode observations. */
+.home-voyage { overflow: hidden; }
+.expedition-hero { display: grid; grid-template-columns: .94fr 1.06fr; align-items: center; min-height: 760px; gap: 12px; }
+.hero-copy { position: relative; z-index: 2; padding: 54px 0 52px; }
+.mission-tag { display: inline-flex; align-items: center; gap: 8px; font: 11px Consolas,monospace; letter-spacing: .12em; color: #fef08a; border: 1px solid rgba(245, 158, 11, 0.4); background: rgba(180, 83, 9, 0.2); border-radius: 50px; padding: 6px 14px; box-shadow: 0 0 15px rgba(245, 158, 11, 0.15); }
+.mission-dot { height: 6px; width: 6px; border-radius: 50%; background: #f59e0b; box-shadow: 0 0 10px #f59e0b; }
+.hero-overline { font-size: 11px; font-family: "Cascadia Code",Consolas,monospace; letter-spacing: .12em; color: #94a3b8; margin: 20px 0 10px; text-transform: uppercase; }
+.hero-copy h1,
+.hero-title {
+  font-size: 72px;
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+  margin: 18px 0 14px;
+}
+.hero-copy h1 span,
+.hero-title span {
+  font-family: "Playfair Display", "Cormorant Garamond", Georgia, Cambria, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold);
+  letter-spacing: -0.01em;
+  display: inline-block;
+  text-shadow: 0 0 25px rgba(232, 194, 132, 0.22);
+}
+.hero-description { max-width: 440px; margin-top: 18px; font-size: 14.5px; line-height: 1.85; color: #cbd5e1; text-shadow: 0 1px 6px rgba(0,0,0,0.9); }
+.primary-cta { padding: 12px 20px; background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%); border-color: #fef08a; color: #020617; font-weight: 900; border-radius: 12px; }
+.secondary-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1.5px solid rgba(45, 212, 191, 0.45); padding: 11px 18px; border-radius: 12px; font-size: 13px; font-weight: 700; color: #ffffff; background: rgba(6, 17, 24, 0.7); backdrop-filter: blur(12px); transition: all .2s; }
+.secondary-cta:hover { background: rgba(45, 212, 191, 0.15); border-color: #2dd4bf; color: #5eead4; }
+.hero-status { margin-top: 20px; max-width: 390px; }
+.data-status { display: inline-flex; align-items: center; gap: 7px; font-size: 10px; color: var(--muted); line-height: 1.6; }
+.data-status svg { flex-shrink: 0; }
+.status-warning { color: var(--gold); }
+.captains-note { display: flex; align-items: center; gap: 14px; margin-top: 28px; color: #f59e0b; background: rgba(2, 6, 10, 0.45); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 12px; padding: 12px 16px; backdrop-filter: blur(12px); }
+.captains-note p { font-size: 11px; line-height: 1.8; color: #cbd5e1; }
+.captains-note span { color: #fef08a; font-weight: 700; }
+.hero-world { position: relative; min-width: 0; padding-top: 20px; }
+.country-explorer { position: relative; }
+.globe-stage { position: relative; width: 100%; height: 480px; }
+.earth-canvas { width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; }
+.earth-canvas:active { cursor: grabbing; }
+.globe-hover { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); font: 10px Consolas,monospace; letter-spacing: .08em; color: var(--muted); white-space: nowrap; pointer-events: none; }
+.globe-coordinate { display: flex; justify-content: space-between; font: 9px Consolas,monospace; letter-spacing: .12em; color: var(--muted); padding: 0 18px; }
+.globe-controls { position: absolute; bottom: 18px; left: 18px; display: flex; gap: 5px; }
+.globe-controls button { width: 33px; height: 33px; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 50%; color: var(--muted); }
+.globe-controls button:hover { color: var(--gold); border-color: var(--gold); }
+.globe-loading,.globe-unavailable { display: grid; place-items: center; min-height: 360px; background: radial-gradient(ellipse at center,var(--glow),transparent 65%); text-align: center; color: var(--muted); }
+.explorer-landing .globe-stage { height: 590px; }
+.explorer-landing { padding-bottom: 175px; }
+.country-search-panel { padding: 18px; position: relative; z-index: 3; max-width: 420px; margin: 0 auto; }
+.explorer-landing .country-search-panel { position: absolute; right: 10px; bottom: 30px; width: 285px; background: var(--nav); backdrop-filter: blur(24px); }
+.country-search { display: flex; align-items: center; gap: 9px; border-bottom: 1px solid var(--line); color: var(--muted); padding-bottom: 10px; }
+.country-search input { width: 100%; min-width: 0; background: transparent; font-size: 13px; color: var(--foreground); border: none; }
+.country-search input::placeholder { color: var(--muted); }
+.country-select { display: block; width: 100%; margin-top: 10px; background: var(--background); color: var(--foreground); border: 1px solid var(--line); border-radius: 5px; padding: 8px; font-size: 12px; }
+.selected-country { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--gold); margin-top: 15px; }
+.country-continue { display: flex; justify-content: space-between; align-items: center; color: var(--accent); font-size: 12px; padding-top: 13px; margin-top: 12px; border-top: 1px solid var(--line); }
+.geography-credit { font: 8px Consolas,monospace; color: var(--muted); margin-top: 15px; text-align: center; line-height: 1.8; }
+.explorer-landing .geography-credit { position: absolute; bottom: 0; width: 100%; }
+.atmosphere { position: absolute; inset: -60px -80px 90px -30px; overflow: hidden; pointer-events: none; }
+.solar-halo { position: absolute; width: 420px; height: 420px; top: -100px; right: -190px; border-radius: 50%; background: radial-gradient(circle,rgba(247,202,123,.22),rgba(220,151,60,.07) 35%,transparent 67%); opacity: 0; transition: opacity 1s; }
+.atmosphere-sun .solar-halo { opacity: 1; }
+.lens-flare { position: absolute; width: 250px; height: 2px; top: 55px; right: -25px; background: linear-gradient(90deg,transparent,rgba(247,202,123,.5),transparent); transform: rotate(-36deg); opacity: 0; }
+.atmosphere-sun .lens-flare { opacity: .65; }
+.star-field { position: absolute; inset: 0; }
+.star-field i { position: absolute; background: var(--foreground); opacity: .35; border-radius: 50%; animation: star-breathe 6s ease-in-out infinite alternate; }
+.rain-field { position: absolute; inset: 20px 0 0; mask-image: linear-gradient(90deg,transparent,#000 25%,#000 85%,transparent); }
+.rain-field i { position: absolute; border: 1px solid rgba(187,231,234,.23); background: linear-gradient(130deg,rgba(216,249,248,.2),transparent 45%,rgba(95,175,189,.1)); box-shadow: inset 1px 2px 2px rgba(220,251,248,.25),0 4px 8px rgba(0,0,0,.12); border-radius: 55% 55% 60% 60%; animation: rain-slide 9s linear infinite; }
+.atmosphere-controls { position: relative; z-index: 4; display: flex; justify-content: center; align-items: center; gap: 12px; margin: 12px 0 25px; }
+.atmosphere-controls .eyebrow { font-size: 8px; }
+.atmosphere-controls button { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: var(--muted); border: 1px solid transparent; }
+.atmosphere-controls button[aria-pressed=true] { border-color: var(--line); background: var(--surface); color: var(--gold); }
+.low-power .star-field,.low-power .rain-field,.low-power .lens-flare { display: none; }
+@keyframes star-breathe { from {opacity:.2;} to {opacity:.6;} }
+@keyframes rain-slide { 0%,20% {transform:translateY(0);opacity:0;} 25% {opacity:.6;} 90% {opacity:.4;} 100% {transform:translateY(120px);opacity:0;} }
+.question-strip { display: grid; grid-template-columns: repeat(4,1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.question-strip>div { display: flex; gap: 15px; padding: 25px 20px; border-left: 1px solid var(--line); }
+.question-strip>div:first-child { border-left: none; padding-left: 0; }
+.question-number { font: 11px Consolas,monospace; color: var(--gold); margin-top: 3px; }
+.question-strip h2 { font-size: 13px; font-weight: 600; }
+.question-strip p { font-size: 10px; line-height: 1.7; color: var(--muted); margin-top: 7px; }
+.discovery-section { padding-top: 95px; padding-bottom: 40px; }
+.discovery-heading { display: flex; justify-content: space-between; align-items: end; gap: 25px; margin-bottom: 35px; }
+.discovery-heading h2 { font-size: 40px; letter-spacing: -.04em; line-height: 1.2; font-weight: 500; }
+.discovery-heading h2 span { color: var(--muted); }
+.discovery-heading>p { color: var(--muted); font-size: 13px; line-height: 1.8; }
+.discovery-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+.discovery-card { padding: 30px; }
+.discovery-card svg { color: var(--gold); }
+.discovery-card h3 { font-size: 18px; font-weight: 550; letter-spacing: -.025em; }
+.discovery-card p { font-size: 13px; line-height: 1.9; margin-top: 12px; color: var(--muted); }
+.evidence-preview { margin-top: 22px; padding: 35px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 35px; background-image: radial-gradient(ellipse at 100% 0,var(--glow),transparent 70%); }
+.evidence-preview h3 { font-size: 23px; letter-spacing: -.035em; }
+.evidence-preview p { font-size: 12px; line-height: 1.8; color: var(--muted); margin-top: 12px; }
+.preview-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center; }
+.preview-metrics>div { padding-left: 20px; border-left: 1px solid var(--line); }
+.preview-metrics span { font: 9px Consolas,monospace; letter-spacing: .1em; color: var(--muted); }
+.preview-metrics strong { display: block; margin-top: 15px; font-size: 30px; font-weight: 500; }
+.preview-metrics strong small { font-size: 12px; color: var(--muted); }
+.preview-metrics .preview-pending { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--gold); min-height: 37px; }
+.end-coordinate { display: flex; justify-content: space-between; gap: 20px; padding: 35px 0 0; color: var(--muted); font: 8px Consolas,monospace; letter-spacing: .14em; }
+.workbench-heading { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 32px; }
+.workbench-heading h1 { font-size: clamp(28px,3.5vw,44px); letter-spacing: -.045em; font-weight: 500; line-height: 1.15; }
+.workbench-heading>div>p:last-child { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.7; }
+.stepper { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin-bottom: 28px; background: rgba(10, 24, 32, 0.82); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+.stepper button { padding: 20px 24px; display: flex; align-items: center; gap: 13px; text-align: left; color: var(--muted); border-left: 1px solid var(--line); }
+.stepper button:first-child { border-left: none; }
+.stepper button>span { font: 11px Consolas,monospace; border: 1px solid var(--line); width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; }
+.stepper button>div { font-size: 13px; font-weight: 600; }
+.stepper small { display: block; font-size: 10px; font-weight: 400; margin-top: 3px; }
+.stepper button>svg { margin-left: auto; }
+.stepper .current { background: var(--glow); color: var(--accent); box-shadow: inset 0 -2px var(--accent); }
+.stepper .current>span { border-color: var(--accent); }
+.workbench-grid { display: grid; grid-template-columns: minmax(0,1fr) 250px; gap: 30px; align-items: start; }
+.setup-panel { padding: 30px; min-width: 0; }
+.setup-panel h2 { font-size: 24px; font-weight: 500; letter-spacing: -.035em; }
+.panel-description { font-size: 13px; line-height: 1.8; color: var(--muted); margin-top: 12px; }
+.filter-tabs { display: flex; gap: 5px; flex-wrap: wrap; margin: 25px 0; }
+.filter-tabs button,.mode-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 11px; border: 1px solid var(--line); color: var(--muted); border-radius: 6px; padding: 9px 12px; text-transform: capitalize; }
+.filter-tabs button[aria-pressed=true],.mode-button.active { color: var(--accent); background: var(--glow); border-color: var(--accent); }
+.variable-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 13px; }
+.variable-option { padding: 22px; border: 1px solid var(--line); border-radius: 10px; text-align: left; background: rgba(8, 20, 28, 0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.variable-option.selected { border-color: var(--accent); background: var(--glow); }
+.variable-option strong { display: block; font-size: 16px; font-weight: 550; margin: 18px 0 10px; }
+.variable-option p { font-size: 12px; line-height: 1.8; color: var(--muted); }
+.variable-option small { display: block; font-size: 10px; margin-top: 12px; }
+.radio-indicator { width: 18px; height: 18px; border: 1px solid var(--line); border-radius: 50%; display: grid; place-items: center; color: var(--accent); }
+.selected .radio-indicator { border-color: var(--accent); }
+.variable-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; border-top: 1px solid var(--line); padding-top: 14px; margin-top: 18px; font: 10px Consolas,monospace; color: var(--muted); }
+.setup-actions { display: flex; justify-content: space-between; padding-top: 25px; margin-top: 28px; border-top: 1px solid var(--line); gap: 10px; }
+button:disabled { opacity: .42; cursor: not-allowed; }
+.expedition-log { padding: 24px; color: var(--gold); background: rgba(10, 24, 32, 0.78); border: 1px solid var(--line); border-radius: 14px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+.expedition-log h3 { color: var(--foreground); font-size: 19px; letter-spacing: -.025em; }
+.expedition-log dl { margin: 25px 0; }
+.expedition-log dl>div { padding: 16px 0; border-top: 1px solid var(--line); }
+.expedition-log dt,.finding-panel dt { font: 9px Consolas,monospace; letter-spacing: .1em; color: var(--muted); margin-bottom: 9px; }
+.expedition-log dd { font-size: 13px; color: var(--foreground); }
+.expedition-log small { display: block; font-size: 11px; line-height: 1.8; color: var(--muted); margin-top: 8px; }
+.log-note { display: flex; gap: 10px; font-size: 11px; line-height: 1.8; color: var(--muted); }
+.log-note svg { flex-shrink: 0; color: var(--gold); margin-top: 2px; }
+.notice { padding: 16px; border: 1px solid var(--line); background: var(--glow); border-radius: 8px; font-size: 12px; line-height: 1.8; color: var(--gold); }
+.text-link { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--accent); }
+.field-label { display: block; color: var(--muted); font-size: 11px; text-transform: capitalize; }
+.field-label input,.field-label select { display: block; width: 100%; margin-top: 9px; border: 1px solid var(--line); background: var(--background); color: var(--foreground); padding: 12px; border-radius: 6px; font: 13px Consolas,monospace; }
+.record-summary { margin-top: 25px; padding: 20px; background: var(--glow); border: 1px solid var(--line); border-radius: 8px; display: flex; align-items: center; gap: 15px; color: var(--accent); }
+.record-summary p { color: var(--foreground); margin-top: 5px; font-size: 14px; }
+.record-summary button { margin-left: auto; }
+.checkbox-row { margin-top: 25px; display: flex; gap: 12px; align-items: center; padding: 20px 0; border-top: 1px solid var(--line); font-size: 13px; }
+.checkbox-row input { accent-color: var(--accent); width: 17px; height: 17px; }
+.checkbox-row small { display: block; color: var(--muted); margin-top: 5px; font-size: 11px; }
+.preset-chip { border: 1px solid var(--line); padding: 7px 11px; border-radius: 50px; font-size: 11px; color: var(--muted); }
+.preset-chip:hover { color: var(--accent); border-color: var(--accent); }
+.region-map { width: 100%; height: 360px; position: relative; z-index: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.page-loading { padding: 100px 25px; text-align: center; color: var(--muted); }
+.results-toolbar { display: flex; justify-content: space-between; gap: 20px; align-items: center; margin-bottom: 35px; }
+.results-workbench>.glass-card { margin-bottom: 25px; }
+.mock-result-notice { display: flex; gap: 14px; align-items: start; border: 1px solid var(--gold); padding: 20px; border-radius: 10px; background: var(--glow); color: var(--gold); margin-bottom: 25px; font-size: 13px; }
+.mock-result-notice>svg { flex-shrink: 0; }
+.mock-result-notice p { margin-top: 6px; font-size: 12px; line-height: 1.8; }
+.results-metrics { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; margin-bottom: 25px; }
+.metric-panel { padding: 26px; }
+.metric-panel strong { display: block; font-size: 38px; font-weight: 450; letter-spacing: -.04em; margin: 18px 0 12px; color: var(--accent); }
+.metric-panel strong small { font-size: 15px; color: var(--muted); margin-left: 10px; }
+.metric-panel p { font-size: 11px; color: var(--muted); line-height: 1.8; }
+.metric-panel .interval-value { font-size: clamp(20px,2.5vw,31px); min-height: 45px; }
+.metric-panel .verdict-value { font-size: 26px; min-height: 45px; color: var(--gold); }
+.finding-panel { padding: 28px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; }
+.finding-panel>div>p { margin-top: 13px; font-size: 15px; line-height: 1.9; }
+.finding-panel dl { border-left: 1px solid var(--line); padding-left: 30px; display: grid; gap: 18px; }
+.finding-panel dd { font-size: 12px; line-height: 1.8; }
+.demo-guide { display: flex; align-items: start; gap: 20px; padding: 28px; margin-bottom: 25px; }
+.demo-guide svg { color: var(--gold); flex-shrink: 0; }
+.demo-guide h2 { font-size: 20px; font-weight: 500; }
+.demo-guide p { font-size: 13px; line-height: 1.9; color: var(--muted); margin-top: 10px; max-width: 730px; }
+.demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.demo-card { padding: 30px; }
+.demo-card svg { color: var(--gold); }
+.demo-card h2 { font-size: 25px; font-weight: 500; margin: 25px 0 14px; letter-spacing: -.03em; }
+.demo-card>p:not(.eyebrow) { color: var(--muted); font-size: 13px; line-height: 1.8; }
+@media(min-width:1280px) { .hero-world { margin-right:-40px; } }
+@media(max-width:1023px) {
+  .expedition-hero { min-height: 700px; grid-template-columns: 1fr 1fr; }
+  .hero-copy h1, .hero-title { font-size: 58px; line-height: 1.08; }
+  .explorer-landing .globe-stage { height: 490px; }
+  .explorer-landing { padding-bottom: 200px; }
+  .explorer-landing .country-search-panel { right: 0; width: 265px; }
+  .workbench-grid { grid-template-columns: minmax(0,1fr) 200px; gap: 20px; }
+  .setup-panel { padding: 22px; }
+  .variable-grid { grid-template-columns: 1fr; }
+  .question-strip>div { padding: 22px 12px; gap: 10px; }
+}
+@media(max-width:767px) {
+  .expedition-hero { grid-template-columns: 1fr; gap: 0; }
+  .hero-copy { padding-top: 45px; padding-bottom: 0; }
+  .hero-copy h1, .hero-title { font-size: clamp(42px,9vw,64px); line-height: 1.1; }
+  .hero-description { max-width: 450px; font-size: 14px; }
+  .hero-overline { margin-top: 25px; }
+  .captains-note { display: none; }
+  .hero-world { padding-top: 35px; }
+  .explorer-landing .globe-stage { height: 450px; }
+  .explorer-landing { padding-bottom: 180px; }
+  .explorer-landing .country-search-panel { width: 270px; right: 10px; bottom: 30px; }
+  .globe-coordinate { padding: 0; font-size: 8px; }
+  .question-strip { grid-template-columns: 1fr 1fr; }
+  .question-strip>div { padding: 22px 15px; }
+  .question-strip>div:nth-child(3) { border-left: none; padding-left: 0; }
+  .question-strip>div:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .discovery-section { padding-top: 60px; }
+  .discovery-heading { align-items: start; flex-direction: column; }
+  .discovery-heading h2 { font-size: 35px; }
+  .discovery-grid { grid-template-columns: 1fr; }
+  .discovery-card { padding: 24px; }
+  .discovery-card .mb-10 { margin-bottom: 22px; }
+  .evidence-preview { grid-template-columns: 1fr; padding: 25px; }
+  .preview-metrics { border-top: 1px solid var(--line); padding-top: 25px; }
+  .preview-metrics>div:first-child { padding-left: 0; border-left: none; }
+  .end-coordinate { font-size: 7px; line-height: 1.8; }
+  .end-coordinate>span:last-child { text-align: right; }
+  .workbench-heading { flex-direction: column; align-items: start; gap: 15px; }
+  .workbench-grid { grid-template-columns: 1fr; }
+  .expedition-log { border: 1px solid var(--line); border-radius: 10px; padding: 25px; }
+  .stepper button { padding: 15px 10px; gap: 7px; }
+  .stepper small,.stepper button>svg { display: none; }
+  .stepper button>span { width: 24px; height: 24px; }
+  .setup-panel { padding: 20px; }
+  .setup-panel h2 { font-size: 22px; }
+  .globe-stage { height: 370px; }
+  .globe-hover { font-size: 8px; top: 15px; }
+  .globe-controls { bottom: 5px; left: 0; }
+  .country-search-panel { margin-top: 10px; }
+  .record-summary { flex-wrap: wrap; }
+  .record-summary button { margin-left: 0; }
+  .results-toolbar { flex-wrap: wrap; }
+  .results-metrics { grid-template-columns: 1fr; gap: 12px; }
+  .metric-panel { padding: 22px; }
+  .metric-panel strong { margin: 12px 0 8px; }
+  .finding-panel { grid-template-columns: 1fr; gap: 25px; padding: 22px; }
+  .finding-panel dl { border-left: none; border-top: 1px solid var(--line); padding-left: 0; padding-top: 25px; }
+  .demo-grid { grid-template-columns: 1fr; }
+  .voyage-nav .eyebrow { font-size: 8px; }
+}
+@media(prefers-reduced-motion:reduce) { .rain-field,.lens-flare { display:none; } .star-field i { animation:none;opacity:.3; } }
+.globe-image-credit { position:absolute; bottom:20px; right:12px; font:8px Consolas,monospace; color:var(--muted); pointer-events:none; }
+@media(max-width:767px){.globe-image-credit{bottom:45px;right:0;font-size:7px;}}
+.voyage-nav .voyage-button { display:none; }
+@media(min-width:1024px){.voyage-nav .voyage-button{display:inline-flex;}}
+/* Keep the four investigation questions in the first desktop viewport. */
+@media(min-width:768px){
+  .expedition-hero{min-height:690px;}
+  .explorer-landing .globe-stage{height:500px;}
+  .explorer-landing{padding-bottom:100px;}
+}
+
+/* Clash of Clans Style Guide Speech Bubble Bevel */
+.game-guide-bubble {
+  position: relative;
+  background: linear-gradient(180deg, #182e3b 0%, #0c1820 100%);
+  border: 2.5px solid var(--gold);
+  border-radius: 20px;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(254, 215, 170, 0.3);
+}
+
+.game-guide-nameplate {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #b45309 0%, #78350f 100%);
+  border: 1px solid #fcd34d;
+  color: #fef3c7;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* =========================================================================
+   SPACE + PIRATE GAME FUSION HUD & 3-COLUMN COCKPIT ALIGNMENT
+   ========================================================================= */
+.game-hud-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 14px;
+  background: rgba(4, 12, 18, 0.88);
+  border: 1px solid rgba(148, 190, 190, 0.22);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(245, 158, 11, 0.15);
+  backdrop-filter: blur(20px);
+}
+
+.hud-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+}
+
+.game-quest-card {
+  position: relative;
+  background: linear-gradient(180deg, var(--surface) 0%, rgba(12, 24, 32, 0.85) 100%);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: 22px 20px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.game-quest-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(245, 158, 11, 0.15);
+}
+
+.quest-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.holotank-ring {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 460px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px dashed rgba(94, 234, 212, 0.3);
+  box-shadow: 0 0 35px rgba(94, 234, 212, 0.15), inset 0 0 25px rgba(245, 158, 11, 0.1);
+  pointer-events: none;
+  animation: holotank-pulse 6s ease-in-out infinite alternate;
+}
+
+@keyframes holotank-pulse {
+  0% { transform: translateX(-50%) rotate(0deg) scale(0.98); opacity: 0.5; }
+  100% { transform: translateX(-50%) rotate(3deg) scale(1.02); opacity: 0.85; }
+}
+/* Orbital Galleon: original decorative scenery, separate from science layers. */
+body { background-image: none; isolation: isolate; }
+.orbital-backdrop { position: fixed; inset: 0; z-index: -1; pointer-events: none; background: #030a12; }
+.orbital-backdrop video { width: 100%; height: 100%; object-fit: cover; opacity: .9; }
+.orbital-vignette { position: absolute; inset: 0; background: linear-gradient(90deg,rgba(3,9,15,.5),transparent 65%),linear-gradient(0deg,#030a12,transparent 50%); }
+.ship-window { position: absolute; inset: 22px; border: 1px solid #b9955c44; border-radius: 46% 46% 10% 10% / 20% 20% 7% 7%; box-shadow: inset 0 0 0 10px #08172044, inset 0 0 60px #0009; }
+.orbit-control { position: fixed; right: 16px; bottom: 16px; z-index: 32; font-size: 11px; padding: 10px 14px; border-radius: 30px; background: #071923ed; border: 1px solid var(--line); color: var(--muted); }
+.game-home { max-width: 1500px; margin: auto; padding: 0 5%; }
+.orbital-deck { min-height: 740px; display: grid; grid-template-columns: .9fr 1.1fr; gap: 28px; align-items: center; position: relative; }
+.deck-copy { padding: 48px 0 90px; position: relative; z-index: 1; }
+.deck-coordinate { color: var(--muted); font: 9px Consolas,monospace; letter-spacing: .16em; margin-bottom: 25px; }
+.deck-copy h1 { font-size: clamp(44px,5vw,76px); line-height: 1.05; letter-spacing: -.05em; font-weight: 650; margin: 24px 0; }
+.deck-copy h1 em { font-family: Georgia,serif; font-weight: 400; color: var(--gold); }
+.deck-intro { font-size: 22px; color: var(--accent); line-height: 1.35; }
+.deck-description { color: var(--muted); max-width: 340px; font-size: 14px; line-height: 1.8; margin-top: 18px; }
+.deck-actions { display: flex; gap: 12px; flex-wrap: wrap; margin: 26px 0 20px; }
+.deck-telemetry { display: flex; gap: 20px; font: 9px Consolas,monospace; letter-spacing: .09em; border-top: 1px solid var(--line); padding-top: 22px; margin-top: 28px; color: var(--muted); }
+.deck-earth { min-width: 0; padding: 36px 0; }
+.orbital-label { display: flex; justify-content: space-between; color: var(--gold); font: 9px Consolas,monospace; letter-spacing: .1em; padding: 10px 0; border-top: 1px solid #b9955c66; }
+.deck-earth .country-explorer { margin-top: 10px; }
+.deck-earth .globe-stage { max-height: 460px; }
+.deck-earth .country-search-panel { background: #071822dd; }
+.mission-dock { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; border: 1px solid #b9955c55; border-radius: 14px; overflow: hidden; margin: 0 0 90px; background: #081722e8; }
+.mission-dock>a,.mission-dock>div { padding: 28px; border-right: 1px solid var(--line); }
+.mission-dock h2 { font-size: 18px; margin: 12px 0 8px; }.mission-dock h2 span { color: var(--gold); }.mission-dock p { font-size: 12px; line-height: 1.8; color: var(--muted); }.mission-dock>a:hover { background: #173438; }
+.manifest-menu { position: relative; font-size: 12px; color: var(--muted); }.manifest-menu summary { cursor: pointer; padding: 10px; }.manifest-menu>div { position: absolute; right: 0; top: 40px; width: 200px; background: #0c202b; border: 1px solid var(--line); border-radius: 10px; padding: 8px; box-shadow: 0 12px 24px #0009; }.manifest-menu a { display: block; padding: 10px; color: var(--foreground); }.manifest-menu a:hover { background: #234249; }
+.journey-hud { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 12px 5%; background: #081822e8; border-bottom: 1px solid var(--line); font-size: 11px; }.journey-hud>span { color: var(--gold); font: 10px Consolas,monospace; }.journey-hud ol { display: flex; gap: 24px; flex-wrap: wrap; }.journey-hud li { display: flex; gap: 7px; align-items: center; color: var(--muted); }.journey-hud b { display: grid; place-items: center; border: 1px solid var(--line); width: 23px; height: 23px; border-radius: 50%; }.journey-hud .reached { color: var(--accent); }.journey-hud [aria-current] b { background: var(--gold); color: #071923; }
+.prediction-panel { border: 1px solid #b9955c66; background: #b9955c09; padding: 22px; margin-top: 24px; border-radius: 12px; }.prediction-panel h3 { margin: 8px 0 14px; font-size: 17px; }.prediction-panel>div { display: flex; gap: 8px; flex-wrap: wrap; }.prediction-panel button { padding: 9px 13px; border: 1px solid var(--line); border-radius: 7px; font-size: 12px; }.prediction-panel [aria-pressed=true] { border-color: var(--gold); background: #b9955c33; }.prediction-panel small { display: block; color: var(--muted); margin-top: 12px; font-size: 11px; }
+.evidence-log { display: flex; justify-content: space-between; gap: 20px; align-items: center; background: #102a30; border: 1px solid #b9955c77; padding: 24px; border-radius: 12px; margin: 20px 0 30px; scroll-margin-top: 110px; }.evidence-log h2 { font-size: 20px; margin: 8px 0; }.evidence-log p:last-child { font-size: 12px; color: var(--muted); }.evidence-log button { flex-shrink: 0; }
+.piper-guide { position: fixed; z-index: 35; left: 12px; bottom: 12px; display: flex; align-items: end; width: 430px; pointer-events: none; filter: drop-shadow(0 8px 14px #0009); }.piper-sprite { flex: 0 0 150px; width: 150px; height: 150px; background: url('/mascot/piper-atlas-v1.png') 0 0 / 300% 200% no-repeat; animation: piper-idle 4s ease-in-out infinite; }.pose-1 { background-position: 50% 0; }.pose-2 { background-position: 100% 0; }.pose-3 { background-position: 0 100%; }.pose-4 { background-position: 50% 100%; }.pose-5 { background-position: 100% 100%; }
+.piper-bubble { pointer-events: auto; background: #f6ead1; color: #182b31; border: 2px solid #c49c5f; border-radius: 15px 15px 15px 2px; padding: 12px 15px; width: 280px; margin-left: -10px; }.piper-heading { display: flex; justify-content: space-between; align-items: center; }.piper-heading strong { font: bold 9px Consolas,monospace; letter-spacing: .1em; color: #5d4625; }.piper-heading button { font-size: 22px; line-height: 1; padding: 0 5px; }.piper-bubble>p { font-size: 13px; line-height: 1.5; margin: 5px 0 10px; animation: piper-speak .2s ease-out; }.piper-actions { display: flex; justify-content: space-between; gap: 10px; font-size: 10px; font-weight: 700; }.piper-actions a { color: #116155; }.piper-actions button { color: #635239; }.piper-bubble details { font-size: 10px; margin-top: 9px; color: #526263; }.piper-bubble details p { line-height: 1.6; margin-top: 6px; }.piper-bubble summary { cursor: pointer; }.piper-guide.minimized { width: auto; }.piper-reopen { pointer-events: auto; display: flex; align-items: center; gap: 8px; border: 1px solid #b9955c88; border-radius: 40px; padding: 5px 14px 5px 5px; background: #0d2630; font-size: 12px; color: #e8c284; }.piper-portrait { display: block; width: 40px; height: 40px; border-radius: 50%; background: url('/mascot/piper-atlas-v1.png') 0 0 / 300% 200%; }
+@keyframes piper-idle { 50% { transform: translateY(-4px); } }@keyframes piper-speak { from { opacity: .5; transform: translateY(3px); } }
+.workbench { padding-bottom: 190px; }
+@media(max-width:1000px){.orbital-deck { grid-template-columns: .85fr 1.15fr; gap: 18px; }.orbital-label { flex-direction: column; gap: 8px; }.deck-copy h1 { font-size: 48px; }.journey-hud ol { gap: 10px; }.journey-hud>a { display: none; }}
+@media(max-width:700px){.orbital-deck { display: flex; flex-direction: column; align-items: stretch; gap: 0; }.deck-copy { padding: 32px 0 0; }.deck-copy h1 { font-size: 52px; }.deck-coordinate { margin-bottom: 16px; font-size: 8px; }.deck-intro { font-size: 20px; }.deck-description { max-width: 100%; }.deck-telemetry { margin-top: 20px; }.deck-earth { padding: 28px 0; }.mission-dock { grid-template-columns: 1fr; }.mission-dock>a,.mission-dock>div { border-right: 0; border-bottom: 1px solid var(--line); padding: 22px; }.mission-dock { margin-bottom: 80px; }.orbital-label { flex-direction: row; font-size: 8px; }.journey-hud { padding: 10px 4%; }.journey-hud>span { display: none; }.journey-hud ol { width: 100%; justify-content: space-between; gap: 4px; }.journey-hud li { font-size: 9px; gap: 3px; }.journey-hud b { width: 20px; height: 20px; }.evidence-log { flex-direction: column; align-items: start; }.piper-guide { left: 8px; bottom: 8px; width: calc(100vw - 24px); max-width: 430px; }.piper-sprite { flex-basis: 100px; width: 100px; height: 100px; }.piper-bubble { flex: 1; width: auto; }.orbit-control { bottom: 12px; right: 8px; font-size: 9px; }.ship-window { inset: 8px; }.voyage-nav>div { gap: 5px; }.voyage-nav nav { justify-content: start; margin-left: 0; width: 100%; }.voyage-nav .theme-toggle { margin-left: auto; }.workbench { padding-bottom: 210px; }}
+@media(prefers-reduced-motion:reduce){.piper-sprite,.piper-bubble>p { animation: none; }.orbital-backdrop video { visibility: hidden; }.orbital-backdrop { background: #030a12 url('/video/orbital-galleon-poster.jpg') center/cover; }}
+/* Mission console revision: connected game scenes and functional daylight palette. */
+html:not(.dark) { color-scheme: light; --background:#eaf2ee; --foreground:#132e38; --surface:rgba(247,252,248,.93); --muted:#47616a; --accent:#116e64; --gold:#80552a; --line:rgba(40,83,85,.25); --nav:#edf5f0ee; --glow:#1a786914; }
+html:not(.dark) body { background-color:#eaf2ee; }
+html:not(.dark) .orbital-backdrop { background:#dfece9; }html:not(.dark) .orbital-backdrop video { opacity:.13; filter:invert(.7); }html:not(.dark) .orbital-vignette { background:linear-gradient(0deg,#eaf2ee,transparent); }
+html:not(.dark) .voyage-nav,html:not(.dark) .voyage-footer { background:#edf5f0f2; color:var(--foreground); box-shadow:0 4px 20px #254b4b0c; }html:not(.dark) .voyage-link.is-active { color:#134c48; background:#cee5db; border-color:#4f9384; box-shadow:none; }
+html:not(.dark) .glass-card,html:not(.dark) .country-search-panel,html:not(.dark) .mission-dock,html:not(.dark) .manifest-menu>div,html:not(.dark) .evidence-log,html:not(.dark) .journey-hud { background:#f3f9f3f0; color:var(--foreground); box-shadow:0 8px 30px #133b3b15; }
+html:not(.dark) .mission-dock>a:hover { background:#dbece3; }html:not(.dark) .mission-tag { color:#6e461b; background:#f0dfbb; }html:not(.dark) .orbit-control { background:#e8f2e9; color:#2b4b51; }html:not(.dark) .hero-copy h1,html:not(.dark) .hero-title { color:var(--foreground); }
+.how-to-play { display:grid; gap:12px; margin:20px 0; font-size:13px; color:var(--foreground); }.how-to-play li { display:flex; align-items:center; gap:12px; }.how-to-play b { display:grid; place-items:center; width:25px; height:25px; border:1px solid var(--gold); border-radius:50%; color:var(--gold); font:12px Consolas,monospace; }.deck-copy h1 { font-size:clamp(38px,4.6vw,66px); }.data-connection { color:var(--muted); font-size:11px; max-width:340px; line-height:1.6; }
+.mission-stage { max-width:1280px; margin:auto; padding:35px 5% 185px; min-height:calc(100vh - 120px); }.mission-heading { margin-bottom:25px; }.mission-heading h1 { font:600 clamp(27px,3vw,42px)/1.15 'Segoe UI',sans-serif; letter-spacing:-.035em; margin:10px 0; }.mission-heading>p { color:var(--muted); font-size:14px; max-width:740px; line-height:1.7; }.game-scene { animation:bridge-arrival .3s ease-out; }.chart-scene { max-width:900px; margin:auto; }.chart-scene .country-explorer { min-height:500px; }.scene-tools { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }.scene-tools button { border:1px solid var(--line); border-radius:8px; padding:10px 17px; font-size:12px; background:var(--surface); }.scene-tools [aria-pressed=true] { border-color:var(--gold); color:var(--gold); background:var(--glow); }.mission-actions { display:flex; gap:16px; justify-content:space-between; align-items:center; padding:20px 0; border-top:1px solid var(--line); }.mission-actions>p { font-size:13px; color:var(--gold); }
+.mission-brief { display:grid; grid-template-columns:.7fr 1.3fr; gap:34px; border:1px solid var(--line); border-top:3px solid var(--gold); border-radius:15px; padding:30px; background:var(--surface); box-shadow:0 25px 80px #0002; }.destination-locked { padding:26px; border-radius:10px; background:var(--glow); border:1px solid var(--line); align-self:start; }.destination-locked>span { font:10px Consolas,monospace; color:var(--accent); letter-spacing:.1em; }.destination-locked h2 { font-size:30px; margin:18px 0 10px; }.destination-locked>p { font:11px/1.8 Consolas,monospace; color:var(--muted); }.destination-locked>button { display:block; padding:10px 0; color:var(--gold); font-size:12px; margin:8px 0; }.destination-locked small { display:block; color:var(--muted); font-size:11px; line-height:1.8; }.mission-brief>div>h2 { font-size:23px; line-height:1.4; margin:10px 0; }.mission-measurement { font-size:12px; color:var(--muted); }.mission-brief details { margin-top:22px; font-size:12px; color:var(--muted); }.mission-brief summary,.flat-map-picker summary { cursor:pointer; padding:12px 0; }.scan-button { margin-top:26px; width:100%; padding:16px; }.record-fields { display:flex; gap:15px; flex-wrap:wrap; align-items:end; padding:15px 0; }.record-fields label { display:grid; gap:8px; font-size:12px; }.record-fields input { color:var(--foreground); background:var(--surface); border:1px solid var(--line); border-radius:7px; padding:10px; max-width:180px; }.record-fields button { color:var(--gold); padding:10px; }.mission-stage .results-workbench { padding:20px 0; }.mission-stage .results-toolbar>a { display:none; }.mission-stage .results-workbench .workbench-heading h1 { font-size:30px; }.flat-map-picker { padding:20px; background:var(--surface); border:1px solid var(--line); border-radius:12px; }.map-instruction { font-size:12px; line-height:1.7; color:var(--muted); margin:14px 0; }.flat-map-picker .region-map { z-index:0; border-radius:10px; }.leaflet-tooltip { color:#13333a; background:#e6f2e8; border-color:#a17b43; }
+.piper-guide { width:390px; left:16px; bottom:14px; padding:9px; gap:10px; border:1px solid #9d7d48; border-top:3px solid #c4a66d; border-radius:12px; background:linear-gradient(135deg,#16343b,#081b26); box-shadow:0 8px 26px #0006,inset 0 1px 0 #ffffff12; align-items:center; filter:none; }.piper-sprite { flex:0 0 100px; width:100px; height:100px; border:1px solid #7d754b; border-radius:10px; animation:none; background-color:#152d32; box-shadow:inset 0 0 20px #0005; }.piper-bubble { background:none; border:none; padding:2px 3px; margin:0; width:auto; flex:1; color:#e5eee6; border-radius:0; }.piper-heading strong { color:#c7aa74; font-size:9px; }.piper-heading button { color:#cad9d5; }.piper-bubble>p { font-size:12px; }.piper-actions a,.piper-actions button { color:#a9dace; }.piper-bubble details { color:#a7bebc; }.piper-guide.minimized { padding:0; border:0; background:none; box-shadow:none; }.piper-reopen { border-radius:10px; border-color:#9d7d48; }.piper-portrait { border-radius:6px; }.piper-guide details[open] { max-height:100px; overflow:auto; }html:not(.dark) .piper-guide:not(.minimized) { background:linear-gradient(120deg,#e5eee1,#f7f7eb); }html:not(.dark) .piper-bubble { color:#183b40; }html:not(.dark) .piper-heading strong { color:#79562b; }html:not(.dark) .piper-heading button,html:not(.dark) .piper-actions a,html:not(.dark) .piper-bubble details { color:#315f5b; }
+.data-console { max-width:1150px; padding:45px 5% 200px; margin:auto; }.data-console>h1 { font-size:clamp(30px,4vw,46px); margin:15px 0; }.data-console>p { color:var(--muted); font-size:14px; line-height:1.7; margin:15px 0; }.master-switch { border:1px solid var(--accent); background:var(--surface); border-radius:14px; padding:26px; display:flex; gap:20px; justify-content:space-between; align-items:center; margin:25px 0; }.master-switch.is-off { border-color:#c77762; }.master-switch h2 { font-size:23px; margin:10px 0; }.master-switch p { color:var(--muted); font-size:12px; }.master-switch button,.source-grid button { border:1px solid var(--accent); padding:10px 15px; border-radius:8px; color:var(--accent); font-size:12px; }.source-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }.source-grid>section { background:var(--surface); border:1px solid var(--line); padding:24px; border-radius:12px; }.source-grid h2 { font-size:18px; margin:12px 0; }.source-grid p { color:var(--muted); font-size:12px; line-height:1.8; min-height:85px; }.source-grid [aria-checked=false] { color:var(--muted); border-color:var(--line); }.inventory-table { background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:24px; margin-top:24px; overflow:auto; }.inventory-table h2 { font-size:22px; margin-bottom:18px; }.inventory-table p { font-size:12px; color:var(--muted); line-height:1.8; }.inventory-table table { width:100%; font-size:12px; margin-top:15px; text-align:left; }.inventory-table td,.inventory-table th { border-bottom:1px solid var(--line); padding:13px 12px 13px 0; }.inventory-table>div { padding:15px 0; border-bottom:1px solid var(--line); }.inventory-table code,.inventory-table small { display:block; color:var(--muted); font-size:11px; margin-top:8px; }.data-locked { max-width:800px; margin:70px auto 220px; padding:35px; border:1px solid var(--gold); background:var(--surface); border-radius:15px; }.data-locked h1 { font-size:32px; margin:18px 0; }.data-locked p { color:var(--muted); font-size:14px; line-height:1.8; }.data-locked>div { display:flex; flex-wrap:wrap; gap:15px; margin-top:25px; }
+.scene-wipe { position:fixed; inset:0; display:flex; flex-direction:column; gap:24px; align-items:center; justify-content:center; z-index:120; background:var(--background); color:var(--gold); animation:bridge-arrival .18s ease-out; }.scene-wipe p { font:12px Consolas,monospace; letter-spacing:.15em; }button:active,.voyage-button:active { transform:translateY(1px) scale(.98); }button:disabled { opacity:.45; cursor:not-allowed; }
+@keyframes bridge-arrival { from { opacity:0; transform:translateY(10px); }to { opacity:1; transform:translateY(0); } }
+@media(max-width:700px){.mission-stage { padding:25px 5% 145px; }.mission-brief { grid-template-columns:1fr; gap:24px; padding:20px; }.destination-locked { padding:20px; }.mission-actions { align-items:start; flex-direction:column; }.source-grid { grid-template-columns:1fr; }.source-grid p { min-height:0; margin-bottom:18px; }.master-switch { align-items:start; flex-direction:column; }.piper-guide { width:calc(100vw - 24px); max-width:390px; left:10px; bottom:10px; }.piper-sprite { flex-basis:80px; width:80px; height:80px; }.data-locked { margin:35px 15px 140px; padding:25px; }.data-console { padding-bottom:140px; }.mission-stage .evidence-log { padding:20px; }.chart-scene .country-explorer { min-height:450px; }.how-to-play { font-size:12px; }.deck-copy h1 { font-size:44px; }}
+@media(prefers-reduced-motion:reduce){.game-scene,.scene-wipe { animation:none; }button:active,.voyage-button:active { transform:none; }}
+html[data-play=true] .voyage-footer { display:none; }
+.mission-heading { scroll-margin-top:100px; outline:none; }
+.mission-stage .results-workbench .loading-compass { width:70px; height:70px; border:1px solid var(--gold); border-radius:50%; box-shadow:0 0 40px var(--glow); }
+
+/* =========================================================================
+   SPACE PIRATE ADVENTURE GAME ENGINE (Temperature Mission 01)
+   ========================================================================= */
+
+.adventure-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+}
+
+.cockpit-canopy-arch {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 42%, transparent 58%, rgba(2, 6, 12, 0.4) 82%, rgba(1, 3, 7, 0.72) 100%);
+  border-top: 1px solid rgba(202, 164, 85, 0.2);
+}
+
+.adventure-hud-bar {
+  position: relative;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px;
+  background: rgba(4, 14, 23, 0.88);
+  border-bottom: 1.5px solid rgba(202, 164, 85, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.adventure-deck-floor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 12vh;
+  min-height: 75px;
+  background: linear-gradient(180deg, rgba(8, 22, 34, 0.75) 0%, rgba(3, 10, 16, 0.95) 100%);
+  border-top: 1.5px solid rgba(202, 164, 85, 0.4);
+  box-shadow: 0 -12px 35px rgba(0, 0, 0, 0.85);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.adventure-deck-floor::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(142, 227, 206, 0.6), transparent);
+}
+
+.rpg-dialogue-window {
+  position: relative;
+  background: rgba(4, 16, 26, 0.95);
+  border: 2px solid rgba(202, 164, 85, 0.8);
+  border-radius: 14px;
+  padding: 22px 24px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85), inset 0 0 18px rgba(202, 164, 85, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 30;
+}
+
+.rpg-dialogue-nameplate {
+  position: absolute;
+  top: -13px;
+  left: 20px;
+  background: linear-gradient(90deg, #caa455, #9b7a33);
+  color: #030a10;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 12px;
+  border-radius: 4px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.holotank-console {
+  background: radial-gradient(circle at center, rgba(12, 44, 66, 0.72) 0%, rgba(3, 13, 22, 0.92) 80%);
+  border: 1.5px solid rgba(142, 227, 206, 0.38);
+  border-radius: 20px;
+  box-shadow: 0 0 35px rgba(142, 227, 206, 0.12), inset 0 0 30px rgba(142, 227, 206, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  position: relative;
+  overflow: hidden;
+}
+
+.radar-sweep-beam {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  transform-origin: 0% 0%;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(142, 227, 206, 0.4) 60deg, transparent 65deg);
+  border-radius: 100% 0 0 0;
+  animation: radar-sweep 2.8s linear infinite;
+  pointer-events: none;
+}
+
+.radar-sweep-beam-cyan {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  transform-origin: 0% 0%;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(34, 211, 238, 0.5) 60deg, transparent 65deg);
+  border-radius: 100% 0 0 0;
+  animation: radar-sweep 2.2s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.tactile-game-btn {
+  background: linear-gradient(180deg, rgba(202, 164, 85, 0.22) 0%, rgba(202, 164, 85, 0.08) 100%);
+  border: 1.5px solid rgba(202, 164, 85, 0.65);
+  color: #f7e8ce;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.tactile-game-btn:hover:not(:disabled) {
+  background: linear-gradient(180deg, rgba(202, 164, 85, 0.38) 0%, rgba(202, 164, 85, 0.18) 100%);
+  border-color: #f3d492;
+  color: #ffffff;
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 20px rgba(202, 164, 85, 0.3);
+}
+
+.tactile-game-btn:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
+}
+
+.tactile-game-btn-primary {
+  background: linear-gradient(180deg, #2dd4bf 0%, #14b8a6 100%);
+  border: 1.5px solid #5eead4;
+  color: #020617;
+  font-weight: 800;
+  box-shadow: 0 0 25px rgba(45, 212, 191, 0.45);
+}
+
+.tactile-game-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #5eead4 0%, #2dd4bf 100%);
+  border-color: #99f6e4;
+  color: #020617;
+  box-shadow: 0 0 35px rgba(45, 212, 191, 0.65);
+}
+
+.prediction-choice-card {
+  background: rgba(8, 22, 34, 0.85);
+  border: 1.5px solid rgba(142, 227, 206, 0.25);
+  border-radius: 14px;
+  padding: 22px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.prediction-choice-card:hover {
+  border-color: rgba(142, 227, 206, 0.6);
+  background: rgba(12, 32, 48, 0.9);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(142, 227, 206, 0.2);
+}
+
+.prediction-choice-card.is-selected {
+  border-color: #caa455;
+  background: rgba(202, 164, 85, 0.16);
+  box-shadow: 0 0 30px rgba(202, 164, 85, 0.35), inset 0 0 15px rgba(202, 164, 85, 0.1);
+  transform: translateY(-3px);
+}
+
+/* =========================================================================
+   ARCADE RPG GAME UI (Matching Learning Adventure Reference)
+   ========================================================================= */
+
+.game-top-banner {
+  background: rgba(4, 14, 23, 0.95);
+  border: 2px solid rgba(45, 212, 191, 0.7);
+  box-shadow: 0 0 25px rgba(45, 212, 191, 0.25), inset 0 0 15px rgba(45, 212, 191, 0.1);
+  border-radius: 8px;
+}
+
+.game-story-popup {
+  background: rgba(6, 18, 28, 0.96);
+  border: 2px solid rgba(202, 164, 85, 0.85);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(202, 164, 85, 0.25);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.dialogue-continue-prompt {
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: #caa455;
+  animation: pulse-continue 1.6s ease-in-out infinite;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+@keyframes pulse-continue {
+  0%, 100% { opacity: 0.45; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(2px); }
+}
+
+.game-scenario-card {
+  position: relative;
+  background: rgba(4, 16, 26, 0.92);
+  border: 2px solid rgba(202, 164, 85, 0.45);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.game-scenario-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: #2dd4bf;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(45, 212, 191, 0.3);
+}
+
+.game-scenario-card.is-active-mission {
+  border-color: #2dd4bf;
+  box-shadow: 0 0 25px rgba(45, 212, 191, 0.4), inset 0 0 15px rgba(45, 212, 191, 0.15);
+}
+
+.game-split-left {
+  background: rgba(4, 16, 26, 0.92);
+  border: 2px solid rgba(45, 212, 191, 0.7);
+  box-shadow: 0 0 30px rgba(45, 212, 191, 0.2), inset 0 0 20px rgba(45, 212, 191, 0.08);
+  border-radius: 16px;
+}
+
+.game-split-right {
+  background: rgba(8, 20, 32, 0.92);
+  border: 2px solid rgba(202, 164, 85, 0.8);
+  box-shadow: 0 0 30px rgba(202, 164, 85, 0.2), inset 0 0 20px rgba(202, 164, 85, 0.08);
+  border-radius: 16px;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+/* =========================================================================
+   AUTHENTIC ARCADE & SCI-FI VISUAL ENHANCEMENTS (Animations & SFX Support)
+   ========================================================================= */
+
+.scanline-effect {
+  position: relative;
+}
+
+.scanline-effect::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  z-index: 20;
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+.holo-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.holo-shimmer::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 35%,
+    rgba(45, 212, 191, 0.08) 50%,
+    transparent 65%
+  );
+  transform: rotate(25deg);
+  animation: shimmer-sweep 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmer-sweep {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  35%, 100% { transform: translateX(100%) rotate(25deg); }
+}
+
+.neon-glow-teal {
+  box-shadow: 0 0 25px rgba(45, 212, 191, 0.4), inset 0 0 15px rgba(45, 212, 191, 0.15);
+  border-color: #2dd4bf !important;
+}
+
+.neon-glow-gold {
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.4), inset 0 0 15px rgba(245, 158, 11, 0.15);
+  border-color: #f59e0b !important;
+}
+
+.neon-glow-red {
+  box-shadow: 0 0 25px rgba(239, 68, 68, 0.4), inset 0 0 15px rgba(239, 68, 68, 0.15);
+  border-color: #ef4444 !important;
+}
+
+@keyframes badge-float {
+  0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 15px rgba(202, 164, 85, 0.5)); }
+  50% { transform: translateY(-4px) scale(1.04); filter: drop-shadow(0 0 28px rgba(202, 164, 85, 0.8)); }
+}
+
+.badge-float-anim {
+  animation: badge-float 3.5s ease-in-out infinite;
+}
+
+@keyframes radar-ping-ring {
+  0% { transform: scale(0.85); opacity: 0.9; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+.radar-ping-anim {
+  animation: radar-ping-ring 2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background-color: #2dd4bf;
+  margin-left: 3px;
+  vertical-align: middle;
+  animation: blink-cursor 0.9s infinite;
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* =========================================================================
+   VIBRANT GAMING WEBPAGE STYLES & GLOSSY 3D GAMEPLAY ELEMENTS
+   ========================================================================= */
+
+.game-btn-arcade {
+  background: linear-gradient(180deg, #38bdf8 0%, #0284c7 60%, #0369a1 100%);
+  border: 2px solid #7dd3fc;
+  color: #ffffff;
+  font-family: inherit;
+  font-weight: 900;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 6px 0 #075985, 0 10px 20px rgba(2, 132, 199, 0.45);
+  border-radius: 12px;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.game-btn-arcade:hover {
+  background: linear-gradient(180deg, #7dd3fc 0%, #38bdf8 60%, #0284c7 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #075985, 0 14px 25px rgba(2, 132, 199, 0.6);
+}
+
+.game-btn-arcade:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #075985, 0 4px 10px rgba(2, 132, 199, 0.4);
+}
+
+.game-btn-gold {
+  background: linear-gradient(180deg, #fbbf24 0%, #d97706 60%, #b45309 100%);
+  border: 2px solid #fde68a;
+  color: #1a0b00;
+  font-weight: 900;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 0 #78350f, 0 10px 25px rgba(217, 119, 6, 0.5);
+  border-radius: 12px;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.game-btn-gold:hover {
+  background: linear-gradient(180deg, #fde68a 0%, #fbbf24 60%, #d97706 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #78350f, 0 14px 30px rgba(217, 119, 6, 0.65);
+}
+
+.game-btn-gold:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #78350f, 0 4px 10px rgba(217, 119, 6, 0.4);
+}
+
+.game-card-3d {
+  background: linear-gradient(145deg, rgba(15, 30, 48, 0.94) 0%, rgba(6, 16, 26, 0.98) 100%);
+  border: 2px solid rgba(245, 158, 11, 0.5);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(245, 158, 11, 0.15);
+  border-radius: 16px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.game-card-3d:hover {
+  transform: translateY(-5px) scale(1.02);
+  border-color: #f59e0b;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.85), 0 0 35px rgba(245, 158, 11, 0.35);
+}
+
+.game-quest-card {
+  background: rgba(8, 20, 32, 0.85);
+  border: 1.5px solid rgba(56, 189, 248, 0.35);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.game-quest-card:hover {
+  transform: translateY(-4px);
+  border-color: #38bdf8;
+  background: rgba(14, 34, 54, 0.92);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.25);
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-float {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+@keyframes pulse-ring-glow {
+  0% { transform: scale(0.96); opacity: 0.8; }
+  50% { transform: scale(1.04); opacity: 1; filter: drop-shadow(0 0 25px rgba(45, 212, 191, 0.7)); }
+  100% { transform: scale(0.96); opacity: 0.8; }
+}
+
+.animate-glow-pulse {
+  animation: pulse-ring-glow 3s ease-in-out infinite;
+}
+
+/* =========================================================================
+   RETRO ARCADE GAME STYLING (NASA Earth System Crisis Scenarios & Arcade UI)
+   ========================================================================= */
+
+.arcade-frame-green {
+  background: rgba(3, 21, 13, 0.94);
+  border: 3px solid #22c55e;
+  box-shadow: 0 0 25px rgba(34, 197, 94, 0.4), inset 0 0 15px rgba(34, 197, 94, 0.15);
+  border-radius: 8px;
+}
+
+.arcade-frame-red {
+  background: rgba(28, 8, 8, 0.94);
+  border: 3px solid #ef4444;
+  box-shadow: 0 0 25px rgba(239, 68, 68, 0.4), inset 0 0 15px rgba(239, 68, 68, 0.15);
+  border-radius: 8px;
+}
+
+.arcade-frame-cyan {
+  background: rgba(3, 18, 36, 0.94);
+  border: 3px solid #06b6d4;
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.45), inset 0 0 15px rgba(6, 182, 212, 0.2);
+  border-radius: 8px;
+}
+
+.arcade-frame-gold {
+  background: rgba(28, 18, 4, 0.94);
+  border: 3px solid #f59e0b;
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.4), inset 0 0 15px rgba(245, 158, 11, 0.15);
+  border-radius: 8px;
+}
+
+.arcade-status-indicator {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.arcade-status-pip {
+  width: 5px;
+  height: 14px;
+  background-color: #facc15;
+  border-radius: 1px;
+  box-shadow: 0 0 8px #facc15;
+}
+
+.rpg-dialogue-window-green {
+  position: relative;
+  background: rgba(3, 16, 12, 0.96);
+  border: 3px solid #22c55e;
+  border-radius: 10px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.85), inset 0 0 20px rgba(34, 197, 94, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 30;
+}
+
+.rpg-dialogue-window-cyan {
+  position: relative;
+  background: rgba(2, 20, 32, 0.96);
+  border: 3px solid #06b6d4;
+  border-radius: 10px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.85), inset 0 0 20px rgba(6, 182, 212, 0.25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 30;
+}
+
+.rpg-dialogue-window-yellow {
+  position: relative;
+  background: rgba(20, 16, 3, 0.96);
+  border: 3px solid #eab308;
+  border-radius: 10px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.85), inset 0 0 20px rgba(234, 179, 8, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 30;
+}
+
+.rpg-nameplate-green {
+  background: #22c55e;
+  color: #022c14;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 14px;
+  border-radius: 2px;
+  box-shadow: 0 2px 10px rgba(34, 197, 94, 0.5);
+}
+
+.rpg-nameplate-cyan {
+  background: #06b6d4;
+  color: #02242a;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 14px;
+  border-radius: 2px;
+  box-shadow: 0 2px 10px rgba(6, 182, 212, 0.5);
+}
+
+.rpg-nameplate-red {
+  background: #dc2626;
+  color: #ffffff;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 14px;
+  border-radius: 2px;
+  box-shadow: 0 2px 10px rgba(220, 38, 38, 0.5);
+}
+
+.arcade-scenario-card {
+  position: relative;
+  background: rgba(18, 12, 6, 0.95);
+  border: 3px solid #92400e;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+}
+
+.arcade-scenario-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  border-color: #f59e0b;
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(245, 158, 11, 0.45);
+}
+
+.arcade-scenario-card.is-playable {
+  border-color: #22c55e;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(34, 197, 94, 0.35);
+}
+
+.arcade-scenario-card.is-playable:hover {
+  border-color: #4ade80;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9), 0 0 35px rgba(74, 222, 128, 0.6);
+}
+
+.arcade-scenario-card.is-playable-flood {
+  border-color: #06b6d4;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 22px rgba(6, 182, 212, 0.45);
+}
+
+.arcade-scenario-card.is-playable-flood:hover {
+  border-color: #22d3ee;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9), 0 0 35px rgba(34, 211, 238, 0.7);
+}
+
+.arcade-scenario-card.is-selected {
+  ring: 3px solid #22c55e;
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.7);
+}
+
+/* Living sky particle backdrop */
+@keyframes celestial-drift {
+  0% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-12px) translateX(8px); }
+  100% { transform: translateY(0px) translateX(0px); }
+}
+
+.celestial-stars-anim {
+  animation: celestial-drift 12s ease-in-out infinite;
+}
+
+/* Background Music Living Equalizer Bars */
+@keyframes bgm-bar-pulse-1 {
+  0%, 100% { height: 3px; }
+  50% { height: 13px; }
+}
+@keyframes bgm-bar-pulse-2 {
+  0%, 100% { height: 11px; }
+  50% { height: 4px; }
+}
+@keyframes bgm-bar-pulse-3 {
+  0%, 100% { height: 6px; }
+  50% { height: 14px; }
+}
+@keyframes bgm-bar-pulse-4 {
+  0%, 100% { height: 12px; }
+  50% { height: 5px; }
+}
+
+.bgm-bar-anim-1 {
+  animation: bgm-bar-pulse-1 1.25s ease-in-out infinite;
+}
+.bgm-bar-anim-2 {
+  animation: bgm-bar-pulse-2 0.95s ease-in-out infinite;
+}
+.bgm-bar-anim-3 {
+  animation: bgm-bar-pulse-3 1.45s ease-in-out infinite;
+}
+.bgm-bar-anim-4 {
+  animation: bgm-bar-pulse-4 1.1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bgm-bar-anim-1,
+  .bgm-bar-anim-2,
+  .bgm-bar-anim-3,
+  .bgm-bar-anim-4 {
+    animation: none !important;
+    height: 7px !important;
+  }
+}
+
+/* ===================================================
+   AUTHENTIC ARCADE GAME TRANSITIONS & TEXT CONTRAST
+   =================================================== */
+
+/* Piper Animated RPG Character Float */
+@keyframes piper-bob {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(0.4deg);
+  }
+}
+
+.animate-piper-idle {
+  animation: piper-bob 3.2s ease-in-out infinite;
+}
+
+/* Arcade Hyperspace Scene Transition Wipe */
+@keyframes hyperspace-wipe {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.92);
+    filter: blur(8px);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.04);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+    filter: blur(0px);
+    pointer-events: none;
+  }
+}
+
+.arcade-hyperspace-overlay {
+  animation: hyperspace-wipe 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Smooth, clean scene transitions without blur or zoom distortion */
+@keyframes arcade-warp-zoom {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.arcade-scene-warp {
+  animation: arcade-warp-zoom 0.15s ease-out forwards;
+}
+
+/* High-Contrast Frosted Game Cards */
+.arcade-game-glass-panel {
+  background: rgba(3, 11, 18, 0.94);
+  border: 2px solid rgba(45, 212, 191, 0.5);
+  border-radius: 14px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Theme-Specific Ambient Overlays on HTML element */
+[data-expedition="heat"] .arcade-game-glass-panel {
+  background: rgba(14, 4, 4, 0.96);
+  border-color: rgba(249, 115, 22, 0.7);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9), 0 0 30px rgba(234, 88, 12, 0.3), inset 0 1px 0 rgba(254, 215, 170, 0.2);
+}
+
+[data-expedition="flood"] .arcade-game-glass-panel {
+  background: rgba(3, 10, 24, 0.96);
+  border-color: rgba(56, 189, 248, 0.7);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9), 0 0 30px rgba(2, 132, 199, 0.3), inset 0 1px 0 rgba(186, 230, 253, 0.2);
+}
+
+[data-expedition="drought"] .arcade-game-glass-panel {
+  background: rgba(16, 9, 3, 0.96);
+  border-color: rgba(245, 158, 11, 0.7);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9), 0 0 30px rgba(217, 119, 6, 0.3), inset 0 1px 0 rgba(254, 243, 199, 0.2);
+}
+
+/* Dynamic Glowing Card Aura */
+@keyframes aura-pulse-heat {
+  0%, 100% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.5), inset 0 0 10px rgba(249, 115, 22, 0.3); }
+  50% { box-shadow: 0 0 35px rgba(249, 115, 22, 0.8), inset 0 0 16px rgba(254, 240, 138, 0.4); }
+}
+
+@keyframes aura-pulse-flood {
+  0%, 100% { box-shadow: 0 0 20px rgba(2, 132, 199, 0.5), inset 0 0 10px rgba(56, 189, 248, 0.3); }
+  50% { box-shadow: 0 0 35px rgba(56, 189, 248, 0.8), inset 0 0 16px rgba(165, 243, 252, 0.4); }
+}
+
+@keyframes aura-pulse-drought {
+  0%, 100% { box-shadow: 0 0 20px rgba(217, 119, 6, 0.5), inset 0 0 10px rgba(245, 158, 11, 0.3); }
+  50% { box-shadow: 0 0 35px rgba(245, 158, 11, 0.8), inset 0 0 16px rgba(254, 240, 138, 0.4); }
+}
+
+.aura-heat {
+  animation: aura-pulse-heat 2.2s ease-in-out infinite;
+}
+.aura-flood {
+  animation: aura-pulse-flood 2.2s ease-in-out infinite;
+}
+.aura-drought {
+  animation: aura-pulse-drought 2.2s ease-in-out infinite;
+}
+
+/* High Contrast Clear Text Typography */
+.text-high-contrast {
+  color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 12px rgba(0, 0, 0, 0.6);
+}
+
+.text-gold-contrast {
+  color: #fef08a !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 14px rgba(245, 158, 11, 0.5);
+}
+
+.text-teal-contrast {
+  color: #5eead4 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 14px rgba(45, 212, 191, 0.5);
+}
+
+/* Tactile 3D Action Push Buttons */
+.arcade-btn-3d {
+  position: relative;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(0);
+}
+
+.arcade-btn-3d:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.arcade-btn-3d:active {
+  transform: translateY(3px) !important;
+}
+
+/* Holographic Card Sheen */
+.holo-shimmer-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.holo-shimmer-sweep::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.08) 35%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 255, 255, 0.08) 65%,
+    transparent 80%
+  );
+  transform: rotate(25deg) translateY(-100%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+
+.holo-shimmer-sweep:hover::after {
+  transform: rotate(25deg) translateY(100%);
+}
+
+/* Floating Arcade Game Badges */
+@keyframes float-badge-anim {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6) translateY(0);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15) translateY(-8px);
+  }
+  40% {
+    transform: translate(-50%, -50%) scale(1) translateY(-16px);
+  }
+  85% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(0.98) translateY(-32px);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.85) translateY(-50px);
+  }
+}
+
+.arcade-floating-badge {
+  animation: float-badge-anim 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* Piper Speech Audio Waveform Bars */
+@keyframes piper-wave-1 {
+  0%, 100% { height: 3px; }
+  50% { height: 12px; }
+}
+@keyframes piper-wave-2 {
+  0%, 100% { height: 11px; }
+  50% { height: 4px; }
+}
+@keyframes piper-wave-3 {
+  0%, 100% { height: 6px; }
+  50% { height: 14px; }
+}
+
+.piper-wave-bar-1 { animation: piper-wave-1 0.7s ease-in-out infinite; }
+.piper-wave-bar-2 { animation: piper-wave-2 0.5s ease-in-out infinite; }
+.piper-wave-bar-3 { animation: piper-wave-3 0.85s ease-in-out infinite; }
+
+/* Sci-Fi HUD Corner Brackets */
+.hud-corner-tl {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid currentColor;
+  border-left: 2px solid currentColor;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.hud-corner-tr {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.hud-corner-bl {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid currentColor;
+  border-left: 2px solid currentColor;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.hud-corner-br {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* ===================================================================
+   AUTHENTIC ARCADE VIDEO GAME STYLING (ELIMINATING "AI PROTOTYPE" VIBE)
+   =================================================================== */
+
+/* 1. Tactile 3D Arcade Buttons with Physical Depth */
+.arcade-physical-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 10px;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.15s ease;
+  user-select: none;
+  cursor: pointer;
+}
+
+.arcade-physical-btn-gold {
+  background: linear-gradient(180deg, #fef08a 0%, #f59e0b 50%, #b45309 100%);
+  color: #1a0800;
+  border: 1.5px solid #fef08a;
+  box-shadow: 0 4px 0 #78350f, 0 8px 25px rgba(245, 158, 11, 0.45);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.arcade-physical-btn-gold:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 #78350f, 0 10px 30px rgba(245, 158, 11, 0.6);
+}
+.arcade-physical-btn-gold:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #78350f, 0 4px 15px rgba(245, 158, 11, 0.4);
+}
+
+.arcade-physical-btn-cyan {
+  background: linear-gradient(180deg, #a5f3fc 0%, #06b6d4 50%, #0e7490 100%);
+  color: #021a24;
+  border: 1.5px solid #a5f3fc;
+  box-shadow: 0 4px 0 #164e63, 0 8px 25px rgba(6, 182, 212, 0.45);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.arcade-physical-btn-cyan:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 #164e63, 0 10px 30px rgba(6, 182, 212, 0.6);
+}
+.arcade-physical-btn-cyan:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #164e63, 0 4px 15px rgba(6, 182, 212, 0.4);
+}
+
+.arcade-physical-btn-red {
+  background: linear-gradient(180deg, #fca5a5 0%, #ef4444 50%, #b91c1c 100%);
+  color: #240404;
+  border: 1.5px solid #fca5a5;
+  box-shadow: 0 4px 0 #7f1d1d, 0 8px 25px rgba(239, 68, 68, 0.45);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.arcade-physical-btn-red:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 #7f1d1d, 0 10px 30px rgba(239, 68, 68, 0.6);
+}
+.arcade-physical-btn-red:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #7f1d1d, 0 4px 15px rgba(239, 68, 68, 0.4);
+}
+
+.arcade-physical-btn-green {
+  background: linear-gradient(180deg, #86efac 0%, #22c55e 50%, #15803d 100%);
+  color: #022c14;
+  border: 1.5px solid #86efac;
+  box-shadow: 0 4px 0 #14532d, 0 8px 25px rgba(34, 197, 94, 0.45);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.arcade-physical-btn-green:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 #14532d, 0 10px 30px rgba(34, 197, 94, 0.6);
+}
+.arcade-physical-btn-green:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #14532d, 0 4px 15px rgba(34, 197, 94, 0.4);
+}
+
+
+/* 2. Clean, Subtle Card Micro-Interactions */
+.game-card-3d {
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.game-card-3d:hover {
+  transform: translateY(-2px);
+}
+.game-card-3d:active {
+  transform: translateY(1px);
+}
+
+/* 3. Clean Thematic Outline Highlights for Scenario Cards */
+.aura-heat-active {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.4) !important;
+}
+
+.aura-flood-active {
+  border-color: #06b6d4 !important;
+  box-shadow: 0 0 16px rgba(6, 182, 212, 0.4) !important;
+}
+
+.aura-drought-active {
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.4) !important;
+}
+
+/* 4. Guaranteed High-Contrast Text Clarity Layer */
+.game-card-surface {
+  background: rgba(3, 7, 18, 0.92) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
+}
+
+.game-text-crisp {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.98), 0 0 1px rgba(0, 0, 0, 1) !important;
+}
+
+/* 5. Animated Oscilloscope Waveform for Scanning Phase */
+@keyframes osc-bar-1 { 0%, 100% { height: 18%; } 50% { height: 95%; } }
+@keyframes osc-bar-2 { 0%, 100% { height: 85%; } 50% { height: 25%; } }
+@keyframes osc-bar-3 { 0%, 100% { height: 45%; } 50% { height: 100%; } }
+@keyframes osc-bar-4 { 0%, 100% { height: 95%; } 50% { height: 35%; } }
+@keyframes osc-bar-5 { 0%, 100% { height: 30%; } 50% { height: 80%; } }
+
+.osc-wave-1 { animation: osc-bar-1 0.65s ease-in-out infinite; }
+.osc-wave-2 { animation: osc-bar-2 0.52s ease-in-out infinite; }
+.osc-wave-3 { animation: osc-bar-3 0.78s ease-in-out infinite; }
+.osc-wave-4 { animation: osc-bar-4 0.48s ease-in-out infinite; }
+.osc-wave-5 { animation: osc-bar-5 0.60s ease-in-out infinite; }
+
+/* ===================================================================
+   CONTINUOUS GAME ENGINE & SCENE TRANSITIONS
+   =================================================================== */
+
+/* Hyperspace Warp Speed Transition */
+@keyframes warp-speed-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5) rotate(5deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.8) rotate(10deg);
+  }
+}
+
+.warp-speed-active {
+  animation: warp-speed-burst 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+}
+
+/* Glowing Expedition Orbs for Mission Selection */
+@keyframes orb-pulse-heat {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.5), inset 0 0 25px rgba(251, 146, 60, 0.6);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 60px rgba(239, 68, 68, 0.85), inset 0 0 45px rgba(251, 146, 60, 0.9);
+    transform: scale(1.03);
+  }
+}
+
+@keyframes orb-pulse-flood {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(6, 182, 212, 0.5), inset 0 0 25px rgba(56, 189, 248, 0.6);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 60px rgba(6, 182, 212, 0.85), inset 0 0 45px rgba(56, 189, 248, 0.9);
+    transform: scale(1.03);
+  }
+}
+
+.orb-heat {
+  animation: orb-pulse-heat 3s ease-in-out infinite;
+}
+
+.orb-flood {
+  animation: orb-pulse-flood 3s ease-in-out infinite;
+}
+
+/* Holotank Base Platform Ring */
+.holotank-platform {
+  background: radial-gradient(ellipse at center, rgba(45, 212, 191, 0.25) 0%, rgba(13, 148, 136, 0.08) 55%, transparent 75%);
+  border-bottom: 2px solid rgba(45, 212, 191, 0.4);
+  box-shadow: 0 0 40px rgba(45, 212, 191, 0.25);
+}
+
+/* Discovery Monolith Glow */
+@keyframes monolith-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.discovery-monolith-1 { animation: monolith-appear 0.5s ease-out 0.1s both; }
+.discovery-monolith-2 { animation: monolith-appear 0.5s ease-out 0.25s both; }
+.discovery-monolith-3 { animation: monolith-appear 0.5s ease-out 0.4s both; }
+.discovery-monolith-4 { animation: monolith-appear 0.5s ease-out 0.55s both; }
+
+/* Interactive Target Beacon Ping */
+@keyframes beacon-ping {
+  0% { transform: scale(0.9); opacity: 1; }
+  75%, 100% { transform: scale(2.4); opacity: 0; }
+}
+
+.beacon-pulse {
+  animation: beacon-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+
+
+
+
+
+
+

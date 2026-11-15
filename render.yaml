@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: trend-compass-api
+    runtime: python
+    buildCommand: bash render_build.sh
+    startCommand: python -m uvicorn api.app.main:app --host 0.0.0.0 --port "$PORT"
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: PYTHONPATH
+        value: .
+      - key: DATA_ADAPTER
+        value: gistemp

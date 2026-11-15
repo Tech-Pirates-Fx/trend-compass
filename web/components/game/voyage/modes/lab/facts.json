@@ -1,0 +1,23 @@
+[
+  {
+    "id": "lab-1",
+    "text": "The Hamed-Rao modified Mann-Kendall test corrects for lag-1 serial autocorrelation in trend significance.",
+    "sourceUrl": "https://data.giss.nasa.gov/gistemp/",
+    "sourceTitle": "Statistical Methods for Environmental Trend Detection",
+    "retrievedDate": "2026-11-15"
+  },
+  {
+    "id": "lab-2",
+    "text": "Theil-Sen slope estimates are median slopes of all pairwise points, providing robustness against outliers.",
+    "sourceUrl": "https://data.giss.nasa.gov/gistemp/",
+    "sourceTitle": "Robust Nonparametric Trend Estimators",
+    "retrievedDate": "2026-11-15"
+  },
+  {
+    "id": "lab-3",
+    "text": "GISTEMP anomalies are measured relative to the 1951-1980 climatological baseline period.",
+    "sourceUrl": "https://data.giss.nasa.gov/gistemp/",
+    "sourceTitle": "GISS Surface Temperature Analysis Baseline",
+    "retrievedDate": "2026-11-15"
+  }
+]

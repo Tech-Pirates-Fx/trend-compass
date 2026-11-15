@@ -1,0 +1,32 @@
+{
+  "input": "D:\\Git\\nasa-app\\data-raw\\gistemp1200_GHCNv4_ERSSTv5.nc.gz",
+  "input_bytes": 25885943,
+  "input_sha256": "f7788db9044d0f0e3f9561ad5d0fd82e59cdfdb82ea8a10244f78f2cb032a3c7",
+  "verified": true,
+  "field": "tempanomaly",
+  "shape": [
+    1762,
+    90,
+    180
+  ],
+  "coverage": {
+    "start": "1880-01",
+    "end": "2026-10"
+  },
+  "baseline": "1951\u20131980",
+  "store_bytes": 114230278,
+  "grid_last_month": "2026-10",
+  "global_comparison": {
+    "months": 1762,
+    "start": "1880-01",
+    "end": "2026-10",
+    "mean_difference": -0.0007842726904026151,
+    "mae": 0.012006522889208407,
+    "rmse": 0.015475016507930725,
+    "max_abs_difference": 0.05480664888602088,
+    "correlation": 0.9993662206820744,
+    "table_sha256": "a7b1939db2e7e484c798e925e0f07f8184356c52ac0e7ce264adcd0f25e81253",
+    "note": "Untuned cos(latitude) cell-center weighted means; the published global table uses the GISS analysis aggregation, so exact equality is not expected. Same retrieval session does not guarantee identical source update vintages."
+  },
+  "elapsed_seconds": 1.156
+}

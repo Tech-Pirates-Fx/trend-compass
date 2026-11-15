@@ -1,0 +1,8 @@
+HTTP 200 /
+Landing hero present: True
+HTTP 200 /investigate
+HTTP 200 /demo
+HTTP 200 /results
+HTTP 200 /geography/countries.json
+MOCK CONTRACT CHECK: catalog variables=5, requested=air_temperature, observations=24, is_mock=True, source=MOCK (synthetic, not real measurements), verdict=not_significant, primary_method=Hamed-Rao Modified Mann-Kendall
+Contract smoke check uses the existing mock adapter, not NASA data validation. No result screenshots were taken.

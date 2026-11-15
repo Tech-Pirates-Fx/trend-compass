@@ -1,0 +1,24 @@
+{
+  "dataset": "combined",
+  "file": "gistemp1200_GHCNv4_ERSSTv5.nc.gz",
+  "source_url": "https://data.giss.nasa.gov/pub/gistemp/gistemp1200_GHCNv4_ERSSTv5.nc.gz",
+  "expected_official_url": "https://data.giss.nasa.gov/pub/gistemp/gistemp1200_GHCNv4_ERSSTv5.nc.gz",
+  "retrieval_date": "2026-11-13",
+  "local_ingestion_date": "2026-11-13",
+  "origin": "direct HTTPS download from NASA GISS with TLS verification",
+  "verified": true,
+  "size_bytes": 25885943,
+  "sha256": "f7788db9044d0f0e3f9561ad5d0fd82e59cdfdb82ea8a10244f78f2cb032a3c7"
+}
+{
+  "dataset": "global",
+  "file": "GLB.Ts+dSST.csv",
+  "source_url": "https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv",
+  "expected_official_url": "https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv",
+  "retrieval_date": "2026-11-13",
+  "local_ingestion_date": "2026-11-13",
+  "origin": "direct HTTPS download from NASA GISS with TLS verification",
+  "verified": true,
+  "size_bytes": 12887,
+  "sha256": "a7b1939db2e7e484c798e925e0f07f8184356c52ac0e7ce264adcd0f25e81253"
+}

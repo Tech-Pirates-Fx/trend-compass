@@ -1,0 +1,137 @@
+================================================================================
+GISTEMP v4 DATA INSPECTION & SCIENTIFIC VALIDATION AUDIT (Task T2)
+Role: ANTI
+Date: 2026-11-13
+================================================================================
+
+1. GISTEMP v4 1200km Smoothing Grid (Primary Dataset):
+   File: data-pipeline/raw\gistemp1200_GHCNv4_ERSSTv5.nc
+   Real File Size: 56,172,176 bytes (53.57 MB)
+   SHA-256 Checksum: bf333837d42ae98b98fbd5d07102592c5cd1d8d2edff5e9fb326a5e1e7e21cf4
+   NetCDF Engine: scipy (NetCDF-3)
+   Dimensions: {'time': 1733, 'nv': 2, 'lat': 90, 'lon': 180}
+   Time Range: 1880-01-15T00:00:00.000000000 to 2024-05-15T00:00:00.000000000 (1733 months)
+   Latitude Grid: min=-89.0, max=89.0, count=90 (2.0 deg regular)
+   Longitude Grid: min=-179.0, max=179.0, count=180 (2.0 deg regular)
+   Variable: tempanomaly
+     Shape: [1733, 90, 180]
+     Dtype: float32
+     Attributes: {'long_name': 'Surface temperature anomaly', 'units': 'K', 'cell_methods': 'time: mean'}
+     Encoding: {'_FillValue': '32767', 'scale_factor': '0.01', 'dtype': 'int16'}
+     Fill Value: 32767
+     Scale Factor: 0.01
+     Data Range: -16.02 to 15.91 deg C
+     NaN Cells: 3,089,466 / 28,074,600 (11.00%)
+   Global Attributes:
+     title: GISTEMP Surface Temperature Analysis
+     institution: NASA Goddard Institute for Space Studies
+     source: http://data.giss.nasa.gov/gistemp/
+     Conventions: CF-1.6
+     history: Created 2024-06-09 12:46:51 by SBBX_to_nc 2.0 - ILAND=1200, IOCEAN=NCDC/ER5, Base: 1951-1980
+
+2. GISTEMP v4 250km Smoothing Grid (Land Stations Only):
+   File: data-pipeline/raw\gistemp250_GHCNv4.nc
+   Real File Size: 115,465,903 bytes (110.12 MB)
+   SHA-256 Checksum: 6606c2f50faa8f8a630338f0bc1464b4a6ec77eed4b03f623031c34899898203
+   NetCDF Engine: h5netcdf (NetCDF-4)
+   Dimensions: {'time': 1762, 'lat': 90, 'lon': 180}
+   Time Range: 1880-01-01T00:00:00.000000000 to 2026-10-01T00:00:00.000000000
+   Variable: temperature anomaly
+     Shape: [1762, 90, 180]
+     Dtype: float32
+     Data Range: -20.89813232421875 to 19.787919998168945
+     NaN Cells: 19,328,428 / 28,544,400 (67.71%)
+   Scientific Smoothing Comparison:
+     - gistemp250 infills only 250 km from land stations; oceans and remote polar areas (Antarctica)
+       are unshaded (missing data: 67.71% of global cells).
+     - gistemp1200 extrapolates 1200 km based on empirical spatial correlation (Hansen et al. 2010),
+       providing continuous coverage across Antarctica and the Arctic basin.
+
+3. GISTEMP Landmask (2x2 Degree):
+   File: data-pipeline/raw\landmask_2deg.nc
+   Real File Size: 17,952 bytes
+   SHA-256 Checksum: 028afa022d44291e795c776af302f8eff292a361e57acb5fcec8a6c7fd7a25bf
+   Variables: ['lfrac']
+   Land Fraction (lfrac): shape=[90, 180], range=[0.0, 1.0]
+
+4. Cosine(Latitude)-Weighted Global Mean Comparison vs Published Table (GLB.Ts+dSST.csv):
+   Methodology:
+     Each grid cell (lat_i, lon_j) is weighted by cos(lat_i * pi / 180).
+     The area-weighted spatial mean is computed for each month without any post-hoc tuning.
+     Two weighting schemes are evaluated:
+       (A) Standard Global Cosine Weighting: sum(w_i * T_ij) / sum(w_i)
+       (B) Equal Hemispheric Weighting: 0.5 * (mean_NH + mean_SH) per Hansen et al. (2010)
+
+   --- Scheme: Standard Global Cosine Weighting ---
+     Overlapping Months (N):     1700
+     Time Range:                 1880-01 to 2021-08
+     Mean Difference (grid-csv): -0.0025 deg C
+     Mean Absolute Difference:   0.0131 deg C
+     Root Mean Square Error:     0.0168 deg C
+     Max Absolute Difference:     0.0579 deg C (at 1990-07)
+     Min Absolute Difference:     0.0000 deg C (at 2008-11)
+     Pearson Correlation (r):    0.999094
+
+   --- Scheme: Equal Hemispheric Weighting ---
+     Overlapping Months (N):     1700
+     Time Range:                 1880-01 to 2021-08
+     Mean Difference (grid-csv): -0.0027 deg C
+     Mean Absolute Difference:   0.0119 deg C
+     Root Mean Square Error:     0.0153 deg C
+     Max Absolute Difference:     0.0588 deg C (at 1990-07)
+     Min Absolute Difference:     0.0000 deg C (at 1943-11)
+     Pearson Correlation (r):    0.999240
+
+   Side-by-Side Sample Comparison (Recent Era: 2020-01 to 2021-06):
+   Period   | Grid (cos_lat) | Grid (hemi_eq) | Published CSV | Diff (global) | Diff (hemi)
+   ---------+----------------+----------------+---------------+---------------+------------
+   2020-01  |          1.163 |          1.162 |          1.16 |       +0.0030 |     +0.0020
+   2020-02  |          1.226 |          1.225 |          1.24 |       -0.0142 |     -0.0147
+   2020-03  |          1.173 |          1.172 |          1.17 |       +0.0027 |     +0.0023
+   2020-04  |          1.128 |          1.127 |          1.13 |       -0.0021 |     -0.0027
+   2020-05  |          1.011 |          1.010 |          1.02 |       -0.0093 |     -0.0101
+   2020-06  |          0.919 |          0.918 |          0.92 |       -0.0013 |     -0.0023
+   2020-07  |          0.899 |          0.898 |          0.90 |       -0.0011 |     -0.0024
+   2020-08  |          0.874 |          0.872 |          0.87 |       +0.0037 |     +0.0017
+   2020-09  |          1.002 |          1.000 |          0.99 |       +0.0116 |     +0.0098
+   2020-10  |          0.887 |          0.884 |          0.88 |       +0.0073 |     +0.0044
+   2020-11  |          1.122 |          1.118 |          1.11 |       +0.0121 |     +0.0080
+   2020-12  |          0.810 |          0.808 |          0.81 |       +0.0001 |     -0.0024
+   2021-01  |          0.819 |          0.818 |          0.81 |       +0.0091 |     +0.0079
+   2021-02  |          0.653 |          0.652 |          0.64 |       +0.0128 |     +0.0125
+   2021-03  |          0.890 |          0.890 |          0.89 |       +0.0002 |     -0.0000
+   2021-04  |          0.764 |          0.764 |          0.76 |       +0.0044 |     +0.0036
+   2021-05  |          0.780 |          0.779 |          0.79 |       -0.0101 |     -0.0109
+   2021-06  |          0.830 |          0.828 |          0.85 |       -0.0199 |     -0.0216
+
+   Side-by-Side Sample Comparison (Early Historical Era: 1880-01 to 1881-06):
+   Period   | Grid (cos_lat) | Grid (hemi_eq) | Published CSV | Diff (global) | Diff (hemi)
+   ---------+----------------+----------------+---------------+---------------+------------
+   1880-01  |         -0.190 |         -0.189 |         -0.17 |       -0.0195 |     -0.0188
+   1880-02  |         -0.274 |         -0.275 |         -0.23 |       -0.0436 |     -0.0449
+   1880-03  |         -0.105 |         -0.106 |         -0.08 |       -0.0252 |     -0.0259
+   1880-04  |         -0.168 |         -0.168 |         -0.15 |       -0.0184 |     -0.0181
+   1880-05  |         -0.112 |         -0.112 |         -0.09 |       -0.0216 |     -0.0216
+   1880-06  |         -0.199 |         -0.199 |         -0.20 |       +0.0014 |     +0.0010
+   1880-07  |         -0.194 |         -0.194 |         -0.17 |       -0.0239 |     -0.0241
+   1880-08  |         -0.110 |         -0.105 |         -0.09 |       -0.0200 |     -0.0150
+   1880-09  |         -0.160 |         -0.156 |         -0.14 |       -0.0197 |     -0.0165
+   1880-10  |         -0.254 |         -0.250 |         -0.22 |       -0.0338 |     -0.0303
+   1880-11  |         -0.234 |         -0.228 |         -0.21 |       -0.0238 |     -0.0176
+   1880-12  |         -0.195 |         -0.190 |         -0.16 |       -0.0352 |     -0.0304
+   1881-01  |         -0.196 |         -0.195 |         -0.19 |       -0.0061 |     -0.0049
+   1881-02  |         -0.157 |         -0.157 |         -0.13 |       -0.0272 |     -0.0268
+   1881-03  |          0.001 |          0.001 |          0.04 |       -0.0394 |     -0.0391
+   1881-04  |          0.048 |          0.049 |          0.06 |       -0.0123 |     -0.0115
+   1881-05  |          0.056 |          0.056 |          0.07 |       -0.0144 |     -0.0135
+   1881-06  |         -0.190 |         -0.185 |         -0.18 |       -0.0097 |     -0.0047
+
+   Scientific Analysis of Discrepancies:
+     1. Correlation r > 0.9991 and Mean Absolute Difference ~0.012 deg C demonstrate outstanding
+        fidelity to published NASA global series directly from raw un-tuned grid integration.
+     2. The table values in GLB.Ts+dSST.csv are rounded to two decimal places (e.g. 1.16, 1.24),
+        which introduces an irreducible discretization uncertainty of +/- 0.005 deg C.
+     3. GISS official table averages Northern and Southern Hemispheres equally (Scheme B), which
+        reduces RMSE from 0.0168 to 0.0153 deg C because early historical coverage was asymmetric.
+     4. GISS station analysis performs subbox aggregation prior to 2x2 grid projection, accounting
+        for residual sub-cell differences.

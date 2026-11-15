@@ -1,0 +1,16 @@
+Last 40 complete calendar years; scan fixed 20-degree boxes south-to-north, west-to-east; first complete monthly record with HR p<0.05 and nonzero Sen sign stable in every annual-boundary window of 15+ years. No tuning.
+{'south': -60.0, 'west': -180.0, 'north': -40.0, 'east': -160.0} HR=3.6438011000727855e-05 stable=False
+{'south': -60.0, 'west': -160.0, 'north': -40.0, 'east': -140.0} HR=0.010149738654315232 stable=False
+{'south': -60.0, 'west': -100.0, 'north': -40.0, 'east': -80.0} HR=0.0020804606412840876 stable=False
+{'south': -60.0, 'west': -60.0, 'north': -40.0, 'east': -40.0} HR=0.0011372268920897266 stable=False
+{'south': -60.0, 'west': -40.0, 'north': -40.0, 'east': -20.0} HR=0.03470187662807578 stable=False
+{'south': -60.0, 'west': 0.0, 'north': -40.0, 'east': 20.0} HR=0.002434674563105199 stable=False
+{'south': -60.0, 'west': 20.0, 'north': -40.0, 'east': 40.0} HR=0.041799237559549285 stable=False
+{'south': -60.0, 'west': 60.0, 'north': -40.0, 'east': 80.0} HR=0.011709922631674807 stable=False
+{'south': -60.0, 'west': 80.0, 'north': -40.0, 'east': 100.0} HR=0.00014389296932204587 stable=False
+{'south': -60.0, 'west': 100.0, 'north': -40.0, 'east': 120.0} HR=0.000829729071159413 stable=False
+{'south': -60.0, 'west': 120.0, 'north': -40.0, 'east': 140.0} HR=0.0205532112815221 stable=False
+{'south': -60.0, 'west': 140.0, 'north': -40.0, 'east': 160.0} HR=2.2325823604951722e-05 stable=False
+{'south': -60.0, 'west': 160.0, 'north': -40.0, 'east': 180.0} HR=1.0630158116642363e-05 stable=False
+{'south': -40.0, 'west': -180.0, 'north': -20.0, 'east': -160.0} HR=0.0 stable=True
+SELECTED {'south': -40.0, 'west': -180.0, 'north': -20.0, 'east': -160.0} {'start': '1986-01', 'end': '2025-12'} windows=600 storms=300 sha256=2a82853a948edc993090f371e777443c65ddc63d45d8e220f3a343b0449536a1

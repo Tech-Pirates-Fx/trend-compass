@@ -1,0 +1,3 @@
+# Case hashes must survive Windows Git checkout unchanged.
+web/public/voyage/*.json -text
+web/public/voyage/cases/*.json -text

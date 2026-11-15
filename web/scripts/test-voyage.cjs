@@ -1,0 +1,17 @@
+const fs=require('node:fs'),assert=require('node:assert/strict'),ts=require('typescript');
+require.extensions['.ts']=(m,f)=>m._compile(ts.transpileModule(fs.readFileSync(f,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,esModuleInterop:true}}).outputText,f);
+const {initial,reduce,calibration,validateCase,matches}=require('../components/game/voyage/domain/voyage.ts');
+const c=validateCase(JSON.parse(fs.readFileSync('public/voyage/cases/first-light.json','utf8')));
+let count=0;function check(name,fn){fn();console.log('PASS',name);count++;}
+const run=(s,a)=>reduce(s,a,c);
+function court(estimate=c.answerKey.senSlopePerDecade,sig=true){let s=run(initial(),{type:'enter',near:true});s=run(s,{type:'net',bbox:c.bbox});s=run(s,{type:'estimate',value:estimate});s=run(s,{type:'lockCompass'});for(let i=0;i<6;i++)s=run(s,{type:'fire'});s=run(s,{type:'flag',significant:sig});return run(s,{type:'lockStorm'});}
+function placed(s){for(const t of s.tokens)s=run(s,{type:'place',tokenId:t.id,slot:t.slot});return s;}
+check('boot, distance fuel, near beacon prerequisite',()=>{let s=initial();assert.equal(run(s,{type:'enter',near:false}).phase,'sea');s=run(s,{type:'sail',distance:200,atPort:false});assert.equal(s.distance,200);assert.ok(s.fuel<100);assert.equal(run(s,{type:'enter',near:true}).phase,'net');});
+check('exact net region and receipt matching',()=>{let s=run(initial(),{type:'enter',near:true});assert.equal(run(s,{type:'net',bbox:{...c.bbox,west:0}}).phase,'net');s=run(s,{type:'net',bbox:c.bbox});assert.ok(matches(s.tokens[0],c));assert.equal(matches({...s.tokens[0],inputs:{bbox:c.bbox,period:{...c.period,start:'1900-01'}}},c),false);});
+check('tool prerequisites and no reward farming',()=>{let s=initial();assert.equal(run(s,{type:'lockStorm'}),s);s=court();assert.equal(s.volleys,6);assert.equal(run(s,{type:'fire'}),s);assert.equal(run(s,{type:'lockCompass'}),s);assert.equal(s.tokens.length,5);});
+check('mismatched tokens bounce and limitation required',()=>{let s=court();assert.equal(run(s,{type:'place',tokenId:'how',slot:'WHERE'}).slots.WHERE,undefined);assert.equal(run(s,{type:'submit'}).phase,'court');s=placed(s);assert.equal(run({...s,limitation:undefined},{type:'submit'}).phase,'court');});
+check('verified engine result succeeds and is idempotent',()=>{let s=run(placed(court()),{type:'submit'});assert.equal(s.phase,'reveal');assert.equal(s.score,70);assert.equal(run(s,{type:'submit'}),s);});
+check('overconfident wrong claim triggers mutiny and one-click retry',()=>{let s=placed(court(-c.answerKey.senSlopePerDecade,false));s=run(s,{type:'confidence'});assert.equal(s.confidence,'Certain');s=run(s,{type:'submit'});assert.equal(s.trust,0);assert.equal(s.phase,'mutiny');s=run(s,{type:'retry'});assert.equal(s.phase,'sea');assert.equal(s.trust,100);assert.equal(s.attempts,1);});
+check('calibration matrix rewards valid non-significance equally',()=>{for(const conf of ['Certain','Likely','Unsure']){assert.ok(calibration(true,conf)>0);assert.ok(calibration(false,conf)<0);}const calm={...c,answerKey:{...c.answerKey,verdict:'not_significant'}};assert.equal(reduce(placed(court(c.answerKey.senSlopePerDecade,false)),{type:'submit'},calm).score,70);});
+check('mock, unverified and incomplete data are rejected',()=>{for(const bad of [{...c,isMock:true},{...c,provenance:{...c.provenance,verified:false}},{...c,stormSlopes:[]}])assert.throws(()=>validateCase(bad));});
+console.log(`${count} behavioral groups passed; NASA case=${c.id}, HR=${c.answerKey.hrP}, slope=${c.answerKey.senSlopePerDecade}`);

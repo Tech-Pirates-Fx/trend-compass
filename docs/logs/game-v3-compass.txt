@@ -1,0 +1,56 @@
+2026-11-15 ANTI Trend Compass Game Experience QA Log (Task: Space Pirate Earth Detective)
+
+1. Root-Cause Audit of Static Game Backdrop:
+   - Root cause 1: In web/components/AppShell.tsx, isGameMode (pathname === "/" || pathname === "/play") completely bypassed OrbitalBackdrop, rendering only an empty background.
+   - Root cause 2: In web/app/globals.css, .adventure-viewport had an opaque background-color (#03080d) and background-image (star-galleon-cockpit.jpg with dark 94% opacity radial gradient), covering any background layers.
+   - Root cause 3: web/components/OrbitalBackdrop.tsx relied on an HTML5 MP4 video that initialized with quiet=true, suspending or failing autoplay on many browsers.
+   - Resolution: Built web/components/CosmicBackdrop.tsx using lightweight HTML5 Canvas with layered parallax star fields (distant twinkling, drifting mid-field, bright glints), curved glowing planetary Earth limb, shifting procedural cosmic aurora, and periodic celestial meteors (~12-18s) and satellites. Enabled automatic pause on document.hidden, static fallback for prefers-reduced-motion, and integrated it directly into AppShell and the Star Galleon viewport.
+
+2. Audio Synthesis Upgrade:
+   - Web Audio synthesizer in web/lib/game-audio.ts upgraded with dedicated procedural cues:
+     * continue/click: crisp console tick
+     * skip: fast dual-tone tick
+     * select/mission_select: major triad chime
+     * predict_rising: warm ascending two-tone (D5 -> G5)
+     * predict_falling: descending two-tone (G5 -> D5)
+     * predict_flat: steady bell (E5)
+     * predict_unsure: inquisitive soft interval (A4 -> C5)
+     * predict_submit: resonant target-lock chord (F4 + A4 + C5)
+     * scan: sonar radar chirp
+     * evidence_reveal: warm resolution chord (C5 -> G5 -> C6)
+     * badge/fanfare: triumphant melodic flourish
+     * ambient ship hum: ultra-quiet 55/110Hz drone through 110Hz lowpass filter at 0.012 gain, initiated safely only after user gesture.
+   - Mute preference persisted in localStorage ("tc-audio-muted").
+
+3. Mission Progression Flow (web/app/page.tsx):
+   - Scene 1 (intro): Skippable opening introducing Tech Pirates and the scientific purpose (investigate real evidence of how Earth is changing without speculation). Welcoming First Mate Piper sprite (piper-fullbody-intro.png). Continue & Skip controls. Replayable from HUD.
+   - Scene 2 (hub): Earth Expedition Hub featuring:
+     * Expedition Catalog: Mission 01 Temperature Horizons (Playable, NASA GISTEMP v4), Mission 02 Rainfall Patterns (Locked, honest explanation of Giovanni IMERG pipeline in progress), Mission 03 Green Cover (Locked, planned extension for MOD13C2).
+     * Planetary Astrolabe: 3D Blue Marble globe, country search with auto-filter, quick presets (India, Australia, Kenya, Norway, Brazil, USA, Japan, Weddell Sea). Retains target across all scenes.
+   - Scene 3 (briefing): Grounded Piper mission briefing with thoughtful standing pose (piper-fullbody-thinking.png) explaining the 2000-2020 window and preparing player for prediction.
+   - Scene 4 (prediction): 4 honest scientific choices: Rising (+🌡️), Falling (-❄️), No Statistically Significant Trend (~⚖️), and Unsure (❓).
+   - Scene 5 (scanning): Radar sweep animation with sonar audio pulse and telemetry log querying real NASA GISTEMP v4 archives. Sensor restore button if master switch is off.
+   - Scene 6 (discovery): Celebratory Piper pose (piper-fullbody-discovery.png). Prominently answers the 4 detective questions:
+     * Q1: What changed (Surface Temperature Anomaly vs 1951-1980 baseline)
+     * Q2: Where (Territory name and exact bounding box coordinates)
+     * Q3: How much (Rate per decade and 95% confidence intervals across 252 monthly observations)
+     * Q4: Is it significant (Hamed-Rao modified Mann-Kendall verdict, p-value, and prominent scientific distinction that not statistically significant != no change).
+     * Interactive tabs for Summary, TimeSeriesChart (Plotly), StatsDetailsTable, and ProvenancePanel.
+     * Honest rewards: badges (Keen Navigator, Careful Scientist, Prudent Skeptic, Honest Observer) and points awarded according to empirical data.
+     * Replay Territory and Next Expedition actions.
+
+4. Voyage Logbook Modal (web/components/VoyageLogModal.tsx):
+   - Tracks expeditions logged, territories mapped, discovery points, and explorer rank (Cadet Navigator -> Planetary Explorer -> Astrolabe Officer -> Master Star Galleon Commander).
+   - Stored in localStorage ("tc-voyage-log").
+
+5. Verification Results:
+   - TypeScript Check (`npx tsc --noEmit`): 0 errors, exit code 0.
+   - ESLint (`npm run lint`): 0 errors, exit code 0.
+   - Backend Pytest (`pytest`): 29/29 passed in 5.02s.
+   - Production Build (`npm run build`): 18/18 static and dynamic routes compiled green.
+   - Live HTTP Tests:
+     * Backend health (/health): 200 OK (adapter: gistemp, is_mock: false, verified: true)
+     * Frontend proxy (/api/py/data-management): 200 OK (can_play: true, files: 8)
+     * India query (/api/py/analyze): 200 OK (verdict: significant, rate: +0.157 °C/dec, p=0.00134, is_mock: false)
+     * Norway query (/api/py/analyze): 200 OK (verdict: not_significant, rate: +0.323 °C/dec, p=0.108 > 0.05, is_mock: false)
+     * Routes /, /play, /about, /data all returning 200 OK.

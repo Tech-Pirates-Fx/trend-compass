@@ -1,0 +1,30 @@
+npm notice run trend-compass-web@1.0.0 build
+npm notice run next build
+  ▲ Next.js 14.2.23
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/7) ...
+   Generating static pages (1/7) 
+   Generating static pages (3/7) 
+   Generating static pages (5/7) 
+ ✓ Generating static pages (7/7)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    175 B          94.3 kB
+├ ○ /_not-found                          873 B          88.2 kB
+├ ○ /demo                                5.11 kB         107 kB
+├ ○ /investigate                         11.2 kB        98.5 kB
+└ ○ /results                             3.95 kB         105 kB
++ First Load JS shared by all            87.3 kB
+  ├ chunks/117-8cbbc6499d866386.js       31.6 kB
+  ├ chunks/fd9d1056-5bf03b15445f672a.js  53.6 kB
+  └ other shared chunks (total)          2.08 kB
+
+
+○  (Static)  prerendered as static content
+

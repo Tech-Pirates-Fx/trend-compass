@@ -1,0 +1,7 @@
+western-arctic 0.356 not_significant
+east-antarctic -0.1348 not_significant
+bering-strait 0.3211 not_significant
+sahel 0.2405 significant
+amazon-basin 0.2601 significant
+mediterranean 0.6022 significant
+Saved 6 real examples; 182225 bytes

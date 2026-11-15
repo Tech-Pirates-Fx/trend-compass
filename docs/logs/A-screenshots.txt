@@ -1,0 +1,8 @@
+globe-india.jpg: 1592x896
+landing-portrait.jpg: 1080x1910
+landing-1920x1080.jpg: 1920x1080
+landing-desktop.jpg: 1592x896
+landing-phone.jpg: 382x827
+real-results.jpg: 1592x896
+wizard-step-2.jpg: 1592x896
+

@@ -1,0 +1,1 @@
+BLOCKED: HTTPError: HTTP Error 401: Unauthorized. No credentials used and no bulk download attempted. Human can export a monthly IMERG V07 area-averaged CSV from Giovanni into data-samples/imerg-monthly.csv with its original metadata.

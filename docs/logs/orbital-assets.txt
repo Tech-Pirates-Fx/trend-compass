@@ -1,0 +1,13 @@
+
+Algorithm : SHA256
+Hash      : AACFC2C454543BB23897C83752F3666937588303A160417F9658A310FB5B9CE8
+Path      : D:\Git\nasa-app\web\public\mascot\piper-atlas-v1.png
+
+Algorithm : SHA256
+Hash      : 71F3FB858422FC0B7B4F5FE6BD155C17CEF9A72845FC230549A4AFC2A5070204
+Path      : D:\Git\nasa-app\web\public\video\orbital-galleon.mp4
+
+Algorithm : SHA256
+Hash      : 31A7240D75C218EF271AB147F4278471B15F86C293D1BB66D2E137C3E60913A6
+Path      : D:\Git\nasa-app\web\public\video\orbital-galleon-poster.jpg
+

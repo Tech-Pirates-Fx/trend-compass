@@ -1,0 +1,118 @@
+name: Deploy Web to Vercel (Production)
+
+'on':
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vercel-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build & Deploy to Vercel
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: 'web/package-lock.json'
+
+      - name: Install dependencies (web)
+        working-directory: web
+        run: npm ci
+
+      - name: Type check (TypeScript)
+        working-directory: web
+        run: npx tsc --noEmit
+
+      - name: Lint (ESLint)
+        working-directory: web
+        run: npm run lint
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel Environment Settings
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Verify Vercel Project Linkage
+        run: |
+          if [ ! -f .vercel/project.json ]; then
+            echo "::error::.vercel/project.json was not created. Verify VERCEL_ORG_ID and VERCEL_PROJECT_ID secrets."
+            exit 1
+          fi
+          echo "Vercel project linked successfully."
+
+      - name: Build Project Artifacts (Vercel Build)
+        run: |
+          unset NEXT_DIST_DIR
+          vercel build --prod --token="$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Verify Latest main SHA
+        id: check_sha
+        run: |
+          git fetch origin main --quiet
+          LATEST_MAIN_SHA=$(git rev-parse origin/main)
+          CURRENT_SHA="${{ github.sha }}"
+          echo "Building commit: $CURRENT_SHA"
+          echo "Current origin/main: $LATEST_MAIN_SHA"
+          if [ "$CURRENT_SHA" != "$LATEST_MAIN_SHA" ]; then
+            echo "::warning::origin/main has advanced to $LATEST_MAIN_SHA. Skipping deployment of stale commit $CURRENT_SHA to avoid overwriting newer code."
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "stale=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy Prebuilt Artifacts to Vercel
+        id: deploy
+        if: steps.check_sha.outputs.stale != 'true'
+        run: |
+          DEPLOYMENT_URL=$(vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN")
+          echo "deployment_url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
+          echo "Successfully deployed to $DEPLOYMENT_URL"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Generate Deployment Summary
+        if: always()
+        run: |
+          echo "### 🚀 Vercel Production Deployment Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Commit:** \`${{ github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Pushed By (Actor):** \`${{ github.actor }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Workflow Ref:** \`${{ github.ref }}\`" >> "$GITHUB_STEP_SUMMARY"
+          if [ "${{ steps.check_sha.outputs.stale }}" == "true" ]; then
+            echo "- **Status:** ⚠️ Skipped (stale commit; newer commit present on main)" >> "$GITHUB_STEP_SUMMARY"
+          elif [ "${{ steps.deploy.outcome }}" == "success" ]; then
+            echo "- **Status:** ✅ Success" >> "$GITHUB_STEP_SUMMARY"
+            echo "- **Deployment URL:** [${{ steps.deploy.outputs.deployment_url }}](${{ steps.deploy.outputs.deployment_url }})" >> "$GITHUB_STEP_SUMMARY"
+          elif [ "${{ steps.deploy.outcome }}" == "failure" ]; then
+            echo "- **Status:** ❌ Failed" >> "$GITHUB_STEP_SUMMARY"
+            echo "- **Note:** Check step logs above. If rejected by Vercel author/team policy, review Vercel plan collaboration settings." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "- **Status:** ${{ job.status }}" >> "$GITHUB_STEP_SUMMARY"
+          fi

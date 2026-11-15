@@ -1,0 +1,47 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-8.4.2, pluggy-1.7.0 -- C:\Users\USER\AppData\Local\Programs\Python\Python311\python.exe
+cachedir: .pytest_cache
+rootdir: D:\Git\nasa-app
+plugins: anyio-4.16.0
+collecting ... collected 32 items
+
+api/tests/test_adapters.py::test_mock_adapter_determinism PASSED         [  3%]
+api/tests/test_adapters.py::test_opposite_trend_preset_pair PASSED       [  6%]
+api/tests/test_adapters.py::test_bounding_box_properties_and_antimeridian PASSED [  9%]
+api/tests/test_adapters.py::test_adapter_environment_registry PASSED     [ 12%]
+api/tests/test_api.py::test_health_endpoint PASSED                       [ 15%]
+api/tests/test_api.py::test_catalog_endpoint PASSED                      [ 18%]
+api/tests/test_api.py::test_timeseries_endpoint PASSED                   [ 21%]
+api/tests/test_api.py::test_analyze_endpoint_full PASSED                 [ 25%]
+api/tests/test_api.py::test_analyze_antimeridian_box PASSED              [ 28%]
+api/tests/test_api.py::test_analyze_daily_resolution PASSED              [ 31%]
+api/tests/test_api.py::test_analyze_invalid_dates_rejected_422 PASSED    [ 34%]
+api/tests/test_api.py::test_analyze_too_short_range_rejected_422 PASSED  [ 37%]
+api/tests/test_api.py::test_analyze_unsupported_resolution_rejected_422 PASSED [ 40%]
+api/tests/test_api.py::test_analyze_unknown_variable_returns_404 PASSED  [ 43%]
+api/tests/test_data_control.py::test_master_switch_blocks_catalog_analysis_timeseries_and_saved PASSED [ 46%]
+api/tests/test_data_control.py::test_sources_are_independent PASSED      [ 50%]
+api/tests/test_data_control.py::test_remote_and_cross_origin_changes_are_denied PASSED [ 53%]
+api/tests/test_data_control.py::test_settings_are_strict_and_corrupt_state_fails_closed PASSED [ 56%]
+api/tests/test_data_control.py::test_inventory_does_not_list_credentials PASSED [ 59%]
+api/tests/test_gistemp.py::test_real_grid_golden_and_provenance PASSED   [ 62%]
+api/tests/test_gistemp.py::test_missing_store_never_falls_back_to_mock PASSED [ 65%]
+api/tests/test_gistemp.py::test_seasonal_slope_is_per_year_not_per_month PASSED [ 68%]
+api/tests/test_gistemp.py::test_real_missing_values_are_not_zero_filled_or_given_a_verdict PASSED [ 71%]
+api/tests/test_rainfall.py::test_gpcp_precipitation_store_and_analysis SKIPPED [ 75%]
+api/tests/test_stats.py::test_preprocess_missing_data_interpolation PASSED [ 78%]
+api/tests/test_stats.py::test_preprocess_stl_deseasonalize PASSED        [ 81%]
+api/tests/test_stats.py::test_known_injected_positive_slope PASSED       [ 84%]
+api/tests/test_stats.py::test_known_injected_negative_slope PASSED       [ 87%]
+api/tests/test_stats.py::test_pure_noise_not_flagged_significant PASSED  [ 90%]
+api/tests/test_stats.py::test_short_series_warning PASSED                [ 93%]
+data-pipeline/test_voyage.py::test_case_receipt_and_clear_current PASSED [ 96%]
+data-pipeline/test_voyage.py::test_world_missing_and_fdr PASSED          [100%]
+
+============================== warnings summary ===============================
+C:\Users\USER\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:40
+  C:\Users\USER\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 31 passed, 1 skipped, 1 warning in 23.00s ==================

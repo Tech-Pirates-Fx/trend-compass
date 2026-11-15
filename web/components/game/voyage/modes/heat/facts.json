@@ -1,0 +1,23 @@
+[
+  {
+    "id": "heat-1",
+    "text": "GISTEMP combines NOAA GHCN v4 station data with ERSST v5 ocean data.",
+    "sourceUrl": "https://data.giss.nasa.gov/gistemp/",
+    "sourceTitle": "GISS Surface Temperature Analysis (GISTEMP v4)",
+    "retrievedDate": "2026-11-15"
+  },
+  {
+    "id": "heat-2",
+    "text": "NASA updates GISTEMP graphs and tables around the 10th of every month.",
+    "sourceUrl": "https://data.giss.nasa.gov/gistemp/",
+    "sourceTitle": "GISS Surface Temperature Analysis (GISTEMP v4)",
+    "retrievedDate": "2026-11-15"
+  },
+  {
+    "id": "heat-3",
+    "text": "GISTEMP gridded analysis divides the globe into a regular 2x2 degree grid (90x180 cells).",
+    "sourceUrl": "https://data.giss.nasa.gov/gistemp/",
+    "sourceTitle": "GISS Surface Temperature Analysis (GISTEMP v4)",
+    "retrievedDate": "2026-11-15"
+  }
+]

@@ -1,0 +1,7 @@
+HTTP 200 /
+HTTP 200 /investigate
+HTTP 200 /demo
+HTTP 200 /results?preset=sahel
+HTTP 200 /imagery/nasa-blue-marble.jpg
+HTTP 200 /demo/presets.json
+UI proxy: adapter=gistemp; is_mock=False; verified=True
