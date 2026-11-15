@@ -80,3 +80,4 @@
 2026-11-16 | OpenAI Codex | README-SUBMISSION | Rewrote jury-facing README and GitHub metadata; labelled historical screenshots and unresolved evidence honestly.
 2026-11-16 | Codex | HISTORY-REVIEW | Read local commit timestamps and merge records; consulted official Space Apps guidance; recommended truthful disclosure; no commits rewritten or pushed.
 2026-11-16 | Codex | SUBMISSION-SNAPSHOT | Updated README and fresh Home/Data screenshots; production build and source test passed; backend rerun stalled; prepared fresh repository with actual current commit time and preserved original history.
+2026-11-15 | Antigravity | docs-and-team-enhancement | Replaced blurry screenshot references with high-res PNG scene flow, authored comprehensive team roster and contribution matrix in README and PROJECT_PAGE, and added GitHub profile pills and contacts across About page.

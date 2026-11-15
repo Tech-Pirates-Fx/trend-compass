@@ -30,6 +30,9 @@ interface Member {
   photo: string;
   motto: string;
   skills: string[];
+  github?: string;
+  githubLabel?: string;
+  email?: string;
 }
 
 export default function AboutPage() {
@@ -45,6 +48,9 @@ export default function AboutPage() {
       photo: "/images/members/sam-joshua.jpg?v=3",
       motto: "“Chart truth across the cosmic noise; never forge a trend.”",
       skills: ["Project Architecture", "NASA Earthdata", "Scientific Governance", "System Strategy"],
+      github: "https://github.com/samjoshua7",
+      githubLabel: "@samjoshua7",
+      email: "samjoshua.paldwin@gmail.com",
     },
     {
       id: "ramakrishna",
@@ -56,6 +62,9 @@ export default function AboutPage() {
       photo: "/images/members/ramakrishna.jpg?v=3",
       motto: "“Fast, mathematically robust, and accessible to every citizen detective.”",
       skills: ["FastAPI Backend", "Next.js 14", "3D WebGL Globe", "High-Perf Ingest"],
+      github: "https://github.com/nijesh7",
+      githubLabel: "@nijesh7",
+      email: "nijeshsrk@gmail.com",
     },
     {
       id: "sathish",
@@ -67,6 +76,7 @@ export default function AboutPage() {
       photo: "/images/members/sathish.jpg?v=3",
       motto: "“Every byte of NASA telemetry must be clean, verified, and unshakeable.”",
       skills: ["NetCDF4 Pipelines", "Cryptographic Receipts", "Cold-Start Cache", "Spatial Indexing"],
+      email: "sathish@fxec.ac.in",
     },
     {
       id: "santhosh",
@@ -78,6 +88,7 @@ export default function AboutPage() {
       photo: "/images/members/santhosh.jpg?v=3",
       motto: "“True signals emerge when you account for serial autocorrelation.”",
       skills: ["Theil–Sen Robust Slope", "Hamed–Rao Correction", "p-Value Validation", "SciPy Stats"],
+      email: "santhosh@fxec.ac.in",
     },
     {
       id: "sam-brainard",
@@ -89,6 +100,7 @@ export default function AboutPage() {
       photo: "/images/members/sam-brainard.jpg?v=3",
       motto: "“No territory is lost when your spatial coordinates are true.”",
       skills: ["Spherical Geometry", "Antimeridian Math", "NASA GIBS Layers", "Signal Processing"],
+      email: "sambrainard@fxec.ac.in",
     },
     {
       id: "rafin-antony",
@@ -100,6 +112,7 @@ export default function AboutPage() {
       photo: "/images/members/rafin-antony.jpg?v=3",
       motto: "“Decoding orbital radio waves into actionable environmental telemetry.”",
       skills: ["Remote Sensing", "SWOT & RADARSAT", "Telemetry Feeds", "Spectral Radiance"],
+      email: "rafinantony@fxec.ac.in",
     },
   ];
 
@@ -241,6 +254,25 @@ export default function AboutPage() {
                         </span>
                       ))}
                     </div>
+                    {lead.github && (
+                      <div className="flex flex-wrap items-center gap-2 pt-2 justify-center sm:justify-start">
+                        <a
+                          href={lead.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-[10px] text-amber-300 font-bold transition-all"
+                        >
+                          <Code2 size={11} />
+                          <span>{lead.githubLabel || "@github"}</span>
+                          <ExternalLink size={9} />
+                        </a>
+                        {lead.email && (
+                          <span className="text-[10px] text-slate-400 font-mono">
+                            {lead.email}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -299,6 +331,28 @@ export default function AboutPage() {
                         </span>
                       ))}
                     </div>
+
+                    {(m.github || m.email) && (
+                      <div className="mt-2 pt-2 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-1">
+                        {m.github ? (
+                          <a
+                            href={m.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-cyan-950/60 hover:bg-cyan-900/60 border border-cyan-500/30 text-[9px] text-cyan-300 font-bold transition-all"
+                          >
+                            <Code2 size={10} />
+                            <span>{m.githubLabel || "@github"}</span>
+                            <ExternalLink size={8} />
+                          </a>
+                        ) : <span />}
+                        {m.email && (
+                          <span className="text-[9px] text-slate-400 font-mono">
+                            {m.email}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -353,6 +407,14 @@ export default function AboutPage() {
                         </span>
                       ))}
                     </div>
+
+                    {m.email && (
+                      <div className="mt-2 pt-2 border-t border-slate-800/80 flex items-center justify-end">
+                        <span className="text-[9px] text-slate-400 font-mono">
+                          {m.email}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 );
               })}

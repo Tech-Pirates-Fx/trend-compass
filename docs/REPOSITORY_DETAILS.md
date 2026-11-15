@@ -10,7 +10,7 @@ Trend Compass turns NASA Earth observations into a space-pirate science adventur
 
 ## Website
 
-Use the confirmed production app URL after testing a complete Heat expedition while signed out. No URL was confirmed in this update; leave blank until checked. Do not guess a deployment address.
+https://trendcompass-techpirates.vercel.app
 
 ## Topics
 
